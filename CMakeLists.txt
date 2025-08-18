@@ -1,0 +1,25 @@
+cmake_minimum_required(VERSION 3.22)
+
+set(CMAKE_CXX_STANDARD          17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS        OFF)
+
+#file(MAKE_DIRECTORY target)
+#set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/target/lib)
+#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/target/lib)
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/target)
+
+include(FetchContent) #Enable FetchContent for cmake git dependencies
+
+
+#The juice
+set(LIBRARY_NAME geometry)
+
+project(${LIBRARY_NAME} VERSION 1.0.0 LANGUAGES C CXX)
+
+add_subdirectory(src)
+
+include(CTest) #Enable CTest - unfortunately this has to be on the main CMakeLists file or it will not detect tests.
+enable_testing()
+
+add_subdirectory(test)
