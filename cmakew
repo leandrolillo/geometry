@@ -62,8 +62,9 @@ parseInputs "$@"
 pushd ${inputs_parameters_path} > /dev/null
 if [[ "${inputs_parameters_clean}" == "true" ]]; then
 	rm -rf ${inputs_parameters_path}/${inputs_parameters_working_folder}
-	mkdir -p ${inputs_parameters_path}/${inputs_parameters_working_folder}
 fi
+
+mkdir -p ${inputs_parameters_path}/${inputs_parameters_working_folder}
 cd ${inputs_parameters_path}/${inputs_parameters_working_folder}
 cmake ..
 make 
