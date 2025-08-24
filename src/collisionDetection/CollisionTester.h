@@ -11,7 +11,7 @@
 #include <vector>
 #include <map>
 #include <Geometry.h>
-#include "../../../geometry/src/collisionDetection/GeometryContact.h"
+#include "GeometryContact.h"
 
 class CollisionTester {
 protected:

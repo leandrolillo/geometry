@@ -11,8 +11,6 @@
 #include<vector>
 #include<Math3d.h>
 
-#include "../collisionDetection/GeometryContact.h"
-
 
 enum class GeometryType {
     SPHERE,

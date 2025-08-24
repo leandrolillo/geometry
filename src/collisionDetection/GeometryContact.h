@@ -9,7 +9,7 @@
 #define SRC_PHYSICS_GEOMETRY_GEOMETRYCONTACT_H_
 
 #include<Geometry.h>
-#include "../../../geometry/src/collisionDetection/BaseContact.h"
+#include "BaseContact.h"
 
 class Geometry;
 
