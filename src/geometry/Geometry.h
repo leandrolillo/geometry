@@ -117,7 +117,6 @@ public:
 };
 
 class AABB : public Geometry {
-	Logger *logger = LoggerFactory::getLogger("geometry/AABB");
     vector halfSizes;
 public:
     AABB(const vector &origin, const vector &halfSizes) : Geometry(origin) {
@@ -258,17 +257,53 @@ public:
     }
 };
 
-class HeightMapGeometry : public AABB {
-    const HeightMapResource *heightMap;
-    Logger *logger = LoggerFactory::getLogger("geometry/HeightMapGeometry");
+
+/**
+ * Base class for Height Maps - Basically it provides
+ *  - a real multivariable function that maps x, z coordinates to a height, thus forming 3d surface.
+ *  - a vectorial function that maps (x,z) with the normal at point (x, height, z)
+ *
+ * It is constrained by width and depth (also height but not sure this should be here - it's here for the aabb)
+ * Implementations could be bitmap based, geographical, etc.
+*/
+class HeightMap {
 public:
-    HeightMapGeometry(const vector &position, const HeightMapResource *heightMap) :
-    	AABB(position + vector(heightMap->getWidth() * 0.5, heightMap->getHeight() * 0.5, heightMap->getDepth() * 0.5),
-    		vector(heightMap->getWidth() * 0.5, heightMap->getHeight() * 0.5, heightMap->getDepth() * 0.5)){
-        this->heightMap = heightMap;
+  //TODO: review if this is required or we should split aabb from heightmapgeometry and use composition instead.
+  virtual real getWidth() const = 0;
+  virtual real getHeight() const = 0;
+  virtual real getDepth() const = 0;
+
+  /**
+   * Returns y coordinate corresponding to point (x, height, z) on the surface
+   */
+  virtual real heightAt(real x, real z) const = 0;
+
+  /**
+   * Returns the normal at a  given (x, z)
+   */
+  virtual vector normalAt(real x, real z) const = 0;
+
+  /**
+   * Returns the point (x, height, z) on the surface
+   */
+  virtual vector positionAt(real x, real z) const {
+    return vector(x, heightAt(x, z), z);
+  }
+
+  virtual String toString() const {
+    return String("HeightMap");
+  }
+};
+
+class HeightMapGeometry : public AABB {
+    const HeightMap &heightMap;
+public:
+    HeightMapGeometry(const vector &position, const HeightMap &heightMap) :
+    	AABB(position + vector(heightMap.getWidth() * 0.5, heightMap.getHeight() * 0.5, heightMap.getDepth() * 0.5),
+    		vector(heightMap.getWidth() * 0.5, heightMap.getHeight() * 0.5, heightMap.getDepth() * 0.5)), heightMap(heightMap) {
     }
 
-    const HeightMapResource *getHeightMap() const {
+    const HeightMap &getHeightMap() const {
     	return this->heightMap;
     }
 
@@ -278,11 +313,11 @@ public:
 
 
     real heightAt(real x, real z) const {
-    	return this->getHeightMap()->heightAt(x - this->getPosition().x, z - this->getPosition().z);
+    	return this->heightMap.heightAt(x - this->getPosition().x, z - this->getPosition().z);
     }
 
     vector normalAt(real x, real z) const {
-    	return this->heightMap->normalAt(x - this->getPosition().x, z - this->getPosition().z);
+    	return this->heightMap.normalAt(x - this->getPosition().x, z - this->getPosition().z);
     }
 };
 
