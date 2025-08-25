@@ -326,10 +326,10 @@ protected:
    		const Sphere &sphere = (const Sphere &)sphereGeometry;
    		const HeightMapGeometry &heightmap = (const HeightMapGeometry &)heightMapGeometry;
 
-		vector aabbClosestPoint = heightmap.closestPoint(sphere.getOrigin());
-		aabbClosestPoint.y = heightmap.getHeightMap()->heightAt(aabbClosestPoint.x - heightmap.getPosition().x, aabbClosestPoint.z - heightmap.getPosition().z);
+      vector aabbClosestPoint = heightmap.closestPoint(sphere.getOrigin());
+      aabbClosestPoint.y = heightmap.heightAt(aabbClosestPoint.x, aabbClosestPoint.z);
 
-		return pointInSphere(aabbClosestPoint, sphere);
+      return pointInSphere(aabbClosestPoint, sphere);
    	}
 
 
