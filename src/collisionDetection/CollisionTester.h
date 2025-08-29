@@ -465,7 +465,7 @@ protected:
 
         if(pointInSphere(aabbClosestPoint, sphere)) {
             vector delta = sphere.getOrigin() - aabbClosestPoint;
-            if(equalsZero(delta * delta)) {
+            if(equalsZeroAbsoluteMargin(delta * delta)) {
             	aabbClosestPoint = aabb.closestSurfacePoint(sphere.getOrigin());
             	delta = aabbClosestPoint - sphere.getOrigin();
             }
