@@ -5,12 +5,9 @@
  *      Author: leandro
  */
 
-#ifndef SRC_PHYSICS_GEOMETRY_GEOMETRY_H_
-#define SRC_PHYSICS_GEOMETRY_GEOMETRY_H_
+#pragma once
 
-#include<vector>
-#include<Math3d.h>
-
+#include "Math3d.h"
 
 enum class GeometryType {
     SPHERE,
@@ -25,184 +22,183 @@ enum class GeometryType {
 
 
 class Geometry {
-    vector origin; //keep this property private and use getOrigin instead.
+  vector origin; //keep this property private and use getOrigin instead.
 public:
-    Geometry(const vector &origin) {
-        this->origin = origin;
-    }
+  Geometry(const vector &origin) {
+      this->origin = origin;
+  }
 
-    virtual ~Geometry() {}
+  virtual ~Geometry() {}
 
-    virtual const vector& getOrigin() const {
-        return this->origin;
-    }
+  virtual const vector& getOrigin() const {
+      return this->origin;
+  }
 
-    virtual void setOrigin(const vector &origin) {
-        this->origin = origin;
-    }
+  virtual void setOrigin(const vector &origin) {
+      this->origin = origin;
+  }
 
-    virtual String toString() const {
-        return "Geometry(origin: " + origin.toString() + ")";
-    }
+  virtual String toString() const {
+      return "Geometry(origin: " + origin.toString() + ")";
+  }
 
-    virtual GeometryType getType() const = 0;
+  virtual GeometryType getType() const = 0;
 };
 
 class Sphere: public Geometry {
-    real radius;
+  real radius;
 public:
-    Sphere(const vector &origin, real radius) : Geometry(origin) {
-        this->radius = radius;
-    }
+  Sphere(const vector &origin, real radius) : Geometry(origin) {
+      this->radius = radius;
+  }
 
-    real getRadius() const {
-        return this->radius;
-    }
+  real getRadius() const {
+      return this->radius;
+  }
 
-    void setRadius(real radius) {
-        this->radius = radius;
-    }
+  void setRadius(real radius) {
+      this->radius = radius;
+  }
 
-    String toString() const override {
-        return "Sphere(origin: " + this->getOrigin().toString() + ", radius: " + std::to_string(this->radius) + ")";
-    }
+  String toString() const override {
+      return "Sphere(origin: " + this->getOrigin().toString() + ", radius: " + std::to_string(this->radius) + ")";
+  }
 
-    GeometryType getType() const override {
-        return GeometryType::SPHERE;
-    }
+  GeometryType getType() const override {
+      return GeometryType::SPHERE;
+  }
 };
 
 class Plane: public Geometry {
-    vector normal;
+  vector normal;
 public:
-    Plane(const vector &origin, const vector &normal) : Geometry(origin) {
-        this->normal = normal.normalizado();
-    }
+  Plane(const vector &origin, const vector &normal) : Geometry(origin) {
+      this->normal = normal.normalizado();
+  }
 
-    const vector &getNormal() const {
-        return this->normal;
-    }
+  const vector &getNormal() const {
+      return this->normal;
+  }
 
-    virtual void setNormal(const vector &normal) {
-    	this->normal = normal;
-    }
+  virtual void setNormal(const vector &normal) {
+    this->normal = normal;
+  }
 
-    String toString() const override {
-        return "Plane(origin: " + this->getOrigin().toString("%.6f") + ", normal: " + this->normal.toString("%.6f") + ")";
-    }
+  String toString() const override {
+      return "Plane(origin: " + this->getOrigin().toString("%.6f") + ", normal: " + this->normal.toString("%.6f") + ")";
+  }
 
-    GeometryType getType() const override {
-        return GeometryType::PLANE;
-    }
+  GeometryType getType() const override {
+      return GeometryType::PLANE;
+  }
 };
 
 class Line: public Geometry {
-    vector direction;
+  vector direction;
 public:
-    Line(const vector &origin, const vector &direction) : Geometry(origin){
-        this->direction = direction.normalizado();
-    }
+  Line(const vector &origin, const vector &direction) : Geometry(origin){
+      this->direction = direction.normalizado();
+  }
 
-    const vector& getDirection() const {
-        return this->direction;
-    }
+  const vector& getDirection() const {
+      return this->direction;
+  }
 
-    String toString() const override {
-        return "Line(origin: " + this->getOrigin().toString() + ", dir: " + this->direction.toString() + ")";
-    }
+  String toString() const override {
+      return "Line(origin: " + this->getOrigin().toString() + ", dir: " + this->direction.toString() + ")";
+  }
 
-    GeometryType getType() const override {
-        return GeometryType::LINE;
-    }
+  GeometryType getType() const override {
+      return GeometryType::LINE;
+  }
 };
 
 class AABB : public Geometry {
-    vector halfSizes;
+  vector halfSizes;
 public:
-    AABB(const vector &origin, const vector &halfSizes) : Geometry(origin) {
-        this->halfSizes = halfSizes;
+  AABB(const vector &origin, const vector &halfSizes) : Geometry(origin) {
+      this->halfSizes = halfSizes;
+  }
+
+  const vector &getHalfSizes() const {
+      return this->halfSizes;
+  }
+
+  void setHalfSizes(const vector &halfSizes) {
+      this->halfSizes = halfSizes;
+  }
+
+  /**
+   * Returns the bottom left position of the aabb. On the other hand, Origin is the center.
+   */
+  vector getPosition() const {
+    return this->getOrigin()- halfSizes;
+  }
+
+  String toString() const override {
+      return "AABB(origin: " + this->getOrigin().toString() + ", halfSizes: " + this->halfSizes.toString() + ")";
+  }
+
+  GeometryType getType() const override {
+      return GeometryType::AABB;
+  }
+
+  vector closestPoint(const vector &target) const {
+      vector mins = this->getOrigin() - this->getHalfSizes();
+      vector maxs = this->getOrigin() + this->getHalfSizes();
+
+
+      return vector(std::max(mins.x, std::min(target.x, maxs.x)),
+              std::max(mins.y, std::min(target.y, maxs.y)),
+              std::max(mins.z, std::min(target.z, maxs.z))
+              );
+  }
+
+  vector closestSurfacePoint(const vector &target) const {
+    vector surfacePoint;
+    real minDistance = REAL_MAX;
+
+    real faceCoord = this->getOrigin().y + this->halfSizes.y;
+    real faceDistanceSq = (faceCoord - target.y) * (faceCoord - target.y);
+    if(faceDistanceSq < minDistance) {
+      minDistance = faceDistanceSq;
+      surfacePoint = vector(target.x, faceCoord, target.z);
     }
 
-    const vector &getHalfSizes() const {
-        return this->halfSizes;
+    faceCoord = this->getOrigin().y - this->halfSizes.y;
+    faceDistanceSq = (faceCoord - target.y) * (faceCoord - target.y);
+    if(faceDistanceSq < minDistance) {
+      minDistance = faceDistanceSq;
+      surfacePoint = vector(target.x, faceCoord, target.z);
     }
 
-    void setHalfSizes(const vector &halfSizes) {
-        this->halfSizes = halfSizes;
+    faceCoord = this->getOrigin().x - this->halfSizes.x;
+    faceDistanceSq = (faceCoord - target.x) * (faceCoord - target.x);
+    if(faceDistanceSq < minDistance) {
+      minDistance = faceDistanceSq;
+      surfacePoint = vector(faceCoord, target.y, target.z);
     }
 
-    /**
-     * Returns the bottom left position of the aabb. On the other hand, Origin is the center.
-     */
-    vector getPosition() const {
-    	return this->getOrigin()- halfSizes;
+    faceCoord = this->getOrigin().x + this->halfSizes.x;
+    faceDistanceSq = (faceCoord - target.x) * (faceCoord - target.x);
+    if(faceDistanceSq < minDistance) {
+      minDistance = faceDistanceSq;
+      surfacePoint = vector(faceCoord, target.y, target.z);
     }
 
-    String toString() const override {
-        return "AABB(origin: " + this->getOrigin().toString() + ", halfSizes: " + this->halfSizes.toString() + ")";
+    faceCoord = this->getOrigin().z - this->halfSizes.z;
+    faceDistanceSq = (faceCoord - target.z) * (faceCoord - target.z);
+    if(faceDistanceSq < minDistance) {
+      minDistance = faceDistanceSq;
+      surfacePoint = vector(target.x, target.y, faceCoord);
     }
 
-    GeometryType getType() const override {
-        return GeometryType::AABB;
+    faceCoord = this->getOrigin().z + this->halfSizes.z;
+    faceDistanceSq = (faceCoord - target.z) * (faceCoord - target.z);
+    if(faceDistanceSq < minDistance) {
+      minDistance = faceDistanceSq;
+      surfacePoint = vector(target.x, target.y, faceCoord);
     }
-
-    vector closestPoint(const vector &target) const {
-        vector mins = this->getOrigin() - this->getHalfSizes();
-        vector maxs = this->getOrigin() + this->getHalfSizes();
-
-
-        return vector(std::max(mins.x, std::min(target.x, maxs.x)),
-                std::max(mins.y, std::min(target.y, maxs.y)),
-                std::max(mins.z, std::min(target.z, maxs.z))
-                );
-    }
-
-    vector closestSurfacePoint(const vector &target) const {
-    	vector surfacePoint;
-    	real minDistance = REAL_MAX;
-
-    	real faceCoord = this->getOrigin().y + this->halfSizes.y;
-    	real faceDistanceSq = (faceCoord - target.y) * (faceCoord - target.y);
-    	if(faceDistanceSq < minDistance) {
-    		minDistance = faceDistanceSq;
-    		surfacePoint = vector(target.x, faceCoord, target.z);
-    	}
-
-    	faceCoord = this->getOrigin().y - this->halfSizes.y;
-    	faceDistanceSq = (faceCoord - target.y) * (faceCoord - target.y);
-    	if(faceDistanceSq < minDistance) {
-    		minDistance = faceDistanceSq;
-    		surfacePoint = vector(target.x, faceCoord, target.z);
-    	}
-
-    	faceCoord = this->getOrigin().x - this->halfSizes.x;
-    	faceDistanceSq = (faceCoord - target.x) * (faceCoord - target.x);
-    	if(faceDistanceSq < minDistance) {
-    		minDistance = faceDistanceSq;
-    		surfacePoint = vector(faceCoord, target.y, target.z);
-    	}
-
-    	faceCoord = this->getOrigin().x + this->halfSizes.x;
-    	faceDistanceSq = (faceCoord - target.x) * (faceCoord - target.x);
-    	if(faceDistanceSq < minDistance) {
-    		minDistance = faceDistanceSq;
-    		surfacePoint = vector(faceCoord, target.y, target.z);
-    	}
-
-    	faceCoord = this->getOrigin().z - this->halfSizes.z;
-    	faceDistanceSq = (faceCoord - target.z) * (faceCoord - target.z);
-    	if(faceDistanceSq < minDistance) {
-    		minDistance = faceDistanceSq;
-    		surfacePoint = vector(target.x, target.y, faceCoord);
-    	}
-
-    	faceCoord = this->getOrigin().z + this->halfSizes.z;
-    	faceDistanceSq = (faceCoord - target.z) * (faceCoord - target.z);
-    	if(faceDistanceSq < minDistance) {
-    		minDistance = faceDistanceSq;
-    		surfacePoint = vector(target.x, target.y, faceCoord);
-    	}
-
 
 		return surfacePoint;
 	}
@@ -212,49 +208,49 @@ public:
  * Loose ends: the bounding volume should be refreshed upon children transformations
  */
 class HierarchicalGeometry : public Geometry {
-    std::unique_ptr<Geometry> boundingVolume;
-    std::vector<std::unique_ptr<Geometry>> children;
+  std::unique_ptr<Geometry> boundingVolume;
+  std::vector<std::unique_ptr<Geometry>> children;
 public:
-    HierarchicalGeometry(Geometry *boundingVolume) : Geometry(boundingVolume->getOrigin()) {
-        this->boundingVolume = std::unique_ptr<Geometry>(boundingVolume);
-    }
-    HierarchicalGeometry(Geometry *boundingVolume, Geometry *child) :  HierarchicalGeometry(boundingVolume) {
-		this->addChildren(child);
-	}
-    const vector& getOrigin() const override {
-        return this->boundingVolume->getOrigin();
-    }
+  HierarchicalGeometry(Geometry *boundingVolume) : Geometry(boundingVolume->getOrigin()) {
+      this->boundingVolume = std::unique_ptr<Geometry>(boundingVolume);
+  }
+  HierarchicalGeometry(Geometry *boundingVolume, Geometry *child) :  HierarchicalGeometry(boundingVolume) {
+  this->addChildren(child);
+}
+  const vector& getOrigin() const override {
+      return this->boundingVolume->getOrigin();
+  }
 
-    void setOrigin(const vector &origin) override {
-        vector delta = origin - this->getOrigin();
+  void setOrigin(const vector &origin) override {
+      vector delta = origin - this->getOrigin();
 
-        this->boundingVolume->setOrigin(origin);
+      this->boundingVolume->setOrigin(origin);
 
-        for(auto &child : children) {
-            child->setOrigin(child->getOrigin() + delta);
-        }
-    }
+      for(auto &child : children) {
+          child->setOrigin(child->getOrigin() + delta);
+      }
+  }
 
-    void addChildren(Geometry *children) {
-        this->children.push_back(std::unique_ptr<Geometry>(children));
+  void addChildren(Geometry *children) {
+      this->children.push_back(std::unique_ptr<Geometry>(children));
 
-    }
+  }
 
-    String toString() const override {
-        return "HierarchicalGeometry(origin: " + this->getOrigin().toString() + ", children: " + std::to_string(this->children.size()) + ")";
-    }
+  String toString() const override {
+      return "HierarchicalGeometry(origin: " + this->getOrigin().toString() + ", children: " + std::to_string(this->children.size()) + ")";
+  }
 
-    GeometryType getType() const override {
-        return GeometryType::HIERARCHY;
-    }
+  GeometryType getType() const override {
+      return GeometryType::HIERARCHY;
+  }
 
-    const Geometry &getBoundingVolume() const {
-        return *this->boundingVolume.get();
-    }
+  const Geometry &getBoundingVolume() const {
+      return *this->boundingVolume.get();
+  }
 
-    const std::vector<std::unique_ptr<Geometry>> &getChildren() const {
-        return this->children;
-    }
+  const std::vector<std::unique_ptr<Geometry>> &getChildren() const {
+      return this->children;
+  }
 };
 
 
@@ -296,29 +292,29 @@ public:
 };
 
 class HeightMapGeometry : public AABB {
-    const HeightMap &heightMap;
+  const HeightMap &heightMap;
 public:
-    HeightMapGeometry(const vector &position, const HeightMap &heightMap) :
-    	AABB(position + vector(heightMap.getWidth() * 0.5, heightMap.getHeight() * 0.5, heightMap.getDepth() * 0.5),
-    		vector(heightMap.getWidth() * 0.5, heightMap.getHeight() * 0.5, heightMap.getDepth() * 0.5)), heightMap(heightMap) {
-    }
+  HeightMapGeometry(const vector &position, const HeightMap &heightMap) :
+    AABB(position + vector(heightMap.getWidth() * 0.5, heightMap.getHeight() * 0.5, heightMap.getDepth() * 0.5),
+      vector(heightMap.getWidth() * 0.5, heightMap.getHeight() * 0.5, heightMap.getDepth() * 0.5)), heightMap(heightMap) {
+  }
 
-    const HeightMap &getHeightMap() const {
-    	return this->heightMap;
-    }
+  const HeightMap &getHeightMap() const {
+    return this->heightMap;
+  }
 
-    GeometryType getType() const override {
-        return GeometryType::HEIGHTMAP;
-    }
+  GeometryType getType() const override {
+      return GeometryType::HEIGHTMAP;
+  }
 
 
-    real heightAt(real x, real z) const {
-    	return this->heightMap.heightAt(x - this->getPosition().x, z - this->getPosition().z);
-    }
+  real heightAt(real x, real z) const {
+    return this->heightMap.heightAt(x - this->getPosition().x, z - this->getPosition().z);
+  }
 
-    vector normalAt(real x, real z) const {
-    	return this->heightMap.normalAt(x - this->getPosition().x, z - this->getPosition().z);
-    }
+  vector normalAt(real x, real z) const {
+    return this->heightMap.normalAt(x - this->getPosition().x, z - this->getPosition().z);
+  }
 };
 
 /**
@@ -345,5 +341,3 @@ public:
 		return halfSpaces[index];
 	}
 };
-
-#endif /* SRC_PHYSICS_GEOMETRY_GEOMETRY_H_ */
