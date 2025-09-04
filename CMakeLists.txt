@@ -4,6 +4,7 @@ set(CMAKE_CXX_STANDARD          17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS        OFF)
 
+include(CMakeLists.properties)
 include(FetchContent) #Enable FetchContent for cmake git dependencies
 
 #project

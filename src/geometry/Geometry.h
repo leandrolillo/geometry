@@ -211,11 +211,12 @@ class HierarchicalGeometry : public Geometry {
   std::unique_ptr<Geometry> boundingVolume;
   std::vector<std::unique_ptr<Geometry>> children;
 public:
-  HierarchicalGeometry(Geometry *boundingVolume) : Geometry(boundingVolume->getOrigin()) {
-      this->boundingVolume = std::unique_ptr<Geometry>(boundingVolume);
+  HierarchicalGeometry(std::unique_ptr<Geometry> boundingVolume) :
+    Geometry(boundingVolume->getOrigin()), boundingVolume(std::move(boundingVolume)) {
   }
-  HierarchicalGeometry(Geometry *boundingVolume, Geometry *child) :  HierarchicalGeometry(boundingVolume) {
-  this->addChildren(child);
+  HierarchicalGeometry(std::unique_ptr<Geometry> boundingVolume, std::unique_ptr<Geometry> child) :
+    HierarchicalGeometry(std::move(boundingVolume)) {
+    this->addChildren(std::move(child));
 }
   const vector& getOrigin() const override {
       return this->boundingVolume->getOrigin();
@@ -231,8 +232,8 @@ public:
       }
   }
 
-  void addChildren(Geometry *children) {
-      this->children.push_back(std::unique_ptr<Geometry>(children));
+  void addChildren(std::unique_ptr<Geometry> children) {
+      this->children.push_back(std::move(children));
 
   }
 
