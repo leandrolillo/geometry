@@ -12,8 +12,8 @@ class BaseContact {
 protected:
   vector normal;
   vector intersection;
-  real penetration;
-  real restitution;
+  real penetration {0};
+  real restitution {0};
 
 public:
   BaseContact(const vector &intersection, const vector &normal,

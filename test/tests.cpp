@@ -4,81 +4,80 @@
 
 TEST_CASE("Geometry Test case")
 {
-	REQUIRE(1 == 1);
+  REQUIRE(1 == 1);
 }
 
 TEST_CASE("Sphere Intersections")
 {
-    CollisionTester intersectionTester;
+  CollisionTester intersectionTester;
 
-    Sphere sphere(vector(0, 0, 0), 2);
-    Sphere anotherSphere(vector(3, 1, 1), 2);
-    Plane plane(vector(0, 0, 0), vector(0, 1, 0));
+  Sphere sphere(vector(0, 0, 0), 2);
+  Sphere anotherSphere(vector(3, 1, 1), 2);
+  Plane plane(vector(0, 0, 0), vector(0, 1, 0));
 
-    AABB aabb(vector(-1, 0, 0), vector(1, 1, 1));
+  AABB aabb(vector(-1, 0, 0), vector(1, 1, 1));
 
-    REQUIRE(intersectionTester.intersects((Geometry &)sphere, (Geometry &)anotherSphere));
-    REQUIRE(intersectionTester.intersects((Geometry &)sphere, (Geometry &)plane));
-    REQUIRE(intersectionTester.intersects((Geometry &)sphere, (Geometry &)aabb));
+  REQUIRE(intersectionTester.intersects((Geometry& )sphere, (Geometry& )anotherSphere));
+  REQUIRE(intersectionTester.intersects((Geometry& )sphere, (Geometry& )plane));
+  REQUIRE(intersectionTester.intersects((Geometry& )sphere, (Geometry& )aabb));
 
-    anotherSphere.setOrigin(vector(0, 6, 0));
-    REQUIRE(!intersectionTester.intersects((Geometry &)sphere, (Geometry &)anotherSphere));
-    REQUIRE(!intersectionTester.intersects((Geometry &)anotherSphere, (Geometry &)plane));
-    REQUIRE(!intersectionTester.intersects((Geometry &)anotherSphere, (Geometry &)aabb));
+  anotherSphere.setOrigin(vector(0, 6, 0));
+  REQUIRE(!intersectionTester.intersects((Geometry& )sphere, (Geometry& )anotherSphere));
+  REQUIRE(!intersectionTester.intersects((Geometry& )anotherSphere, (Geometry& )plane));
+  REQUIRE(!intersectionTester.intersects((Geometry& )anotherSphere, (Geometry& )aabb));
 }
 
 TEST_CASE("Plane Intersections")
 {
-    CollisionTester intersectionTester;
+  CollisionTester intersectionTester;
 
-    Sphere sphere(vector(0, 0, 0), 2);
-    Sphere anotherSphere(vector(0, 6, 0), 2);
-    Plane plane(vector(0, 0, 0), vector(0, 1, 0));
+  Sphere sphere(vector(0, 0, 0), 2);
+  Sphere anotherSphere(vector(0, 6, 0), 2);
+  Plane plane(vector(0, 0, 0), vector(0, 1, 0));
 
-    REQUIRE(intersectionTester.intersects((Geometry &)plane, (Geometry &)sphere));
-    REQUIRE(!intersectionTester.intersects((Geometry &)plane, (Geometry &)anotherSphere));
+  REQUIRE(intersectionTester.intersects((Geometry& )plane, (Geometry& )sphere));
+  REQUIRE(!intersectionTester.intersects((Geometry& )plane, (Geometry& )anotherSphere));
 }
 
 TEST_CASE("Aabb Intersections")
 {
-    CollisionTester intersectionTester;
+  CollisionTester intersectionTester;
 
-    Sphere sphere(vector(0, 0, 0), 2);
-    AABB aabb(vector(1, 0, 0), vector(1, 1, 1));
+  Sphere sphere(vector(0, 0, 0), 2);
+  AABB aabb(vector(1, 0, 0), vector(1, 1, 1));
 
-    REQUIRE(intersectionTester.intersects((Geometry &)aabb, (Geometry &)sphere));
-    aabb.setOrigin(vector(4, 0, 0));
-    REQUIRE(!intersectionTester.intersects((Geometry &)aabb, (Geometry &)sphere));
+  REQUIRE(intersectionTester.intersects((Geometry& )aabb, (Geometry& )sphere));
+  aabb.setOrigin(vector(4, 0, 0));
+  REQUIRE(!intersectionTester.intersects((Geometry& )aabb, (Geometry& )sphere));
 }
 
 TEST_CASE("Sphere Contacts")
 {
-    CollisionTester intersectionTester;
+  CollisionTester intersectionTester;
 
-    real radius = 2.0f;
-    Sphere sphere(vector(-1, 0, 0), radius);
-    Sphere anotherSphere(vector(2, 1, 1), radius);
+  real radius = 2.0f;
+  Sphere sphere(vector(-1, 0, 0), radius);
+  Sphere anotherSphere(vector(2, 1, 1), radius);
 
 //        Plane plane(vector(0, 0, 0), vector(0, 1, 0));
 //        AABB aabb(vector(-1, 0, 0), vector(1, 1, 1));
 
-    std::vector<GeometryContact> contacts = intersectionTester.detectCollision((Geometry &)sphere, (Geometry &)anotherSphere);
-    REQUIRE(!contacts.empty());
-    GeometryContact contact = *contacts.begin();
+  std::vector<GeometryContact> contacts = intersectionTester.detectCollision((Geometry&) sphere, (Geometry&) anotherSphere);
+  REQUIRE(!contacts.empty());
+  GeometryContact contact = *contacts.begin();
 
-    REQUIRE((void *)&sphere == (void *)contact.getGeometryA());
-    REQUIRE((void *)&anotherSphere == (void *)contact.getGeometryB());
+  REQUIRE((void* )&sphere == (void* )contact.getGeometryA());
+  REQUIRE((void* )&anotherSphere == (void* )contact.getGeometryB());
 
-    vector expectedNormal = (sphere.getOrigin() - anotherSphere.getOrigin()).normalizado();
-    real expectedPenetration = (radius + radius) - (sphere.getOrigin() - anotherSphere.getOrigin()).modulo();
+  vector expectedNormal = (sphere.getOrigin() - anotherSphere.getOrigin()).normalizado();
+  real expectedPenetration = (radius + radius) - (sphere.getOrigin() - anotherSphere.getOrigin()).modulo();
 
-    REQUIRE(expectedNormal == contact.getNormal());
-    REQUIRE(expectedPenetration == contact.getPenetration());
+  REQUIRE(expectedNormal == contact.getNormal());
+  REQUIRE(expectedPenetration == contact.getPenetration());
 
-
-    anotherSphere.setOrigin(vector(0, 6, 0));
-    contacts = intersectionTester.detectCollision((Geometry &)sphere, (Geometry &)anotherSphere);
-    REQUIRE(contacts.empty());
+  anotherSphere.setOrigin(vector(0, 6, 0));
+  contacts = intersectionTester.detectCollision((Geometry&) sphere, (Geometry&) anotherSphere);
+  REQUIRE(contacts.empty());
 }
 
 TEST_CASE("Sphere AABB Intersection") {
@@ -87,5 +86,23 @@ TEST_CASE("Sphere AABB Intersection") {
   Sphere sphere(vector(-7.23, 40.98, 0.00), 10);
   AABB aabb(vector(0.00, 50.00, 0.00), vector(80.00, 10.00, 10.00));
 
-  REQUIRE(intersectionTester.intersects(sphere, aabb));
+  Plane plane(vector(0.0, 50.0, 0.0), vector(0, 1, 0));
+
+  CHECK(intersectionTester.intersects(sphere, aabb));
+  std::vector<GeometryContact> contacts = intersectionTester.detectCollision(sphere, aabb);
+  CHECK(contacts.size() > 0);
+
+  CHECK(intersectionTester.intersects(sphere, plane));
+  contacts = intersectionTester.detectCollision(sphere, plane);
+  CHECK(contacts.size() > 0);
+
+
+  CHECK(intersectionTester.intersects(aabb, sphere));
+  contacts = intersectionTester.detectCollision(aabb, sphere);
+  CHECK(contacts.size() > 0);
+
+  CHECK(intersectionTester.intersects(plane, sphere));
+  contacts = intersectionTester.detectCollision(plane, sphere);
+  CHECK(contacts.size() > 0);
+
 }
