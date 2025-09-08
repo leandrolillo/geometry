@@ -80,3 +80,12 @@ TEST_CASE("Sphere Contacts")
     contacts = intersectionTester.detectCollision((Geometry &)sphere, (Geometry &)anotherSphere);
     REQUIRE(contacts.empty());
 }
+
+TEST_CASE("Sphere AABB Intersection") {
+  CollisionTester intersectionTester;
+
+  Sphere sphere(vector(-7.23, 40.98, 0.00), 10);
+  AABB aabb(vector(0.00, 50.00, 0.00), vector(80.00, 10.00, 10.00));
+
+  REQUIRE(intersectionTester.intersects(sphere, aabb));
+}
