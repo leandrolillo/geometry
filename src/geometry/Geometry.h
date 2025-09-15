@@ -143,6 +143,16 @@ public:
       return GeometryType::AABB;
   }
 
+  AABB minkowskiDifference(const AABB &right) {
+    vector minA = this->getOrigin() - this->getHalfSizes();
+    vector maxB = right.getOrigin() + right.getHalfSizes();
+
+    vector minMD = minA - maxB;
+    vector halfSizesMD = this->halfSizes + right.halfSizes;
+
+    return AABB(minMD + halfSizesMD, halfSizesMD);
+  }
+
   vector closestPoint(const vector &target) const {
       vector mins = this->getOrigin() - this->getHalfSizes();
       vector maxs = this->getOrigin() + this->getHalfSizes();
