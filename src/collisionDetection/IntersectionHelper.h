@@ -14,11 +14,6 @@
 
 class IntersectionHelper {
 public:
-  static bool pointSphere(const vector &point, const Sphere &sphere) {
-      vector delta = sphere.getOrigin() - point;
-      return delta * delta <= sphere.getRadius() * sphere.getRadius();
-  }
-
   /**
    * Line intersection test
    */
@@ -91,7 +86,7 @@ public:
 
       //printf("closest point: %s\n", aabbClosestPoint.toString().c_str());
 
-      return pointSphere(aabbClosestPoint, sphere);
+      return sphere.contains(aabbClosestPoint);
   }
 
   static bool sphereHierarchy(const Sphere &sphere, const HierarchicalGeometry &hierarchy) {
@@ -208,7 +203,7 @@ public:
 
       //printf("closest point: %s\n", aabbClosestPoint.toString().c_str());
 
-      if(pointSphere(aabbClosestPoint, sphere)) {
+      if(sphere.contains(aabbClosestPoint)) {
           vector delta = sphere.getOrigin() - aabbClosestPoint;
           real distance = delta.modulo();
           vector normal = delta * (1.0 / distance);

@@ -60,6 +60,11 @@ public:
       this->radius = radius;
   }
 
+  bool contains(const vector &point) const {
+    vector delta = getOrigin() - point;
+    return delta * delta <= radius * radius;
+  }
+
   String toString() const override {
       return "Sphere(origin: " + this->getOrigin().toString() + ", radius: " + std::to_string(this->radius) + ")";
   }
@@ -143,9 +148,18 @@ public:
       return GeometryType::AABB;
   }
 
+  bool contains(const vector &point) const {
+    vector mins = this->getOrigin() - this->halfSizes;
+    vector maxs = this->getOrigin() + this->halfSizes;
+
+    return mins.x <= point.x && point.x <= maxs.x &&
+        mins.y <= point.y && point.y <= maxs.y &&
+        mins.z <= point.z && point.z <= maxs.z;
+  }
+
   AABB minkowskiDifference(const AABB &right) {
-    vector minA = this->getOrigin() - this->getHalfSizes();
-    vector maxB = right.getOrigin() + right.getHalfSizes();
+    vector minA = this->getOrigin() - this->halfSizes;
+    vector maxB = right.getOrigin() + right.halfSizes;
 
     vector minMD = minA - maxB;
     vector halfSizesMD = this->halfSizes + right.halfSizes;
@@ -154,8 +168,8 @@ public:
   }
 
   vector closestPoint(const vector &target) const {
-      vector mins = this->getOrigin() - this->getHalfSizes();
-      vector maxs = this->getOrigin() + this->getHalfSizes();
+      vector mins = this->getOrigin() - this->halfSizes;
+      vector maxs = this->getOrigin() + this->halfSizes;
 
 
       return vector(std::max(mins.x, std::min(target.x, maxs.x)),
