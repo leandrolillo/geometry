@@ -157,7 +157,7 @@ public:
         mins.z <= point.z && point.z <= maxs.z;
   }
 
-  AABB minkowskiDifference(const AABB &right) {
+  AABB minkowskiDifference(const AABB &right) const {
     vector minA = this->getOrigin() - this->halfSizes;
     vector maxB = right.getOrigin() + right.halfSizes;
 
@@ -184,21 +184,21 @@ public:
 
     real faceCoord = this->getOrigin().y + this->halfSizes.y;
     real faceDistanceSq = (faceCoord - target.y) * (faceCoord - target.y);
-    if(faceDistanceSq < minDistance) {
+    //if(faceDistanceSq < minDistance) {
       minDistance = faceDistanceSq;
       surfacePoint = vector(target.x, faceCoord, target.z);
-    }
+    //}
 
     faceCoord = this->getOrigin().y - this->halfSizes.y;
     faceDistanceSq = (faceCoord - target.y) * (faceCoord - target.y);
-    if(faceDistanceSq < minDistance) {
+    if(faceDistanceSq <= minDistance) {
       minDistance = faceDistanceSq;
       surfacePoint = vector(target.x, faceCoord, target.z);
     }
 
     faceCoord = this->getOrigin().x - this->halfSizes.x;
     faceDistanceSq = (faceCoord - target.x) * (faceCoord - target.x);
-    if(faceDistanceSq < minDistance) {
+    if(faceDistanceSq <= minDistance) {
       minDistance = faceDistanceSq;
       surfacePoint = vector(faceCoord, target.y, target.z);
     }

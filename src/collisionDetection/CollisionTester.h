@@ -47,7 +47,7 @@ public:
 //        this->addIntersectionTest(GeometryType::SPHERE, GeometryType::OOBB, &CollisionTester::sphereOobb);
       this->addIntersectionTest(GeometryType::SPHERE, GeometryType::HEIGHTMAP, &CollisionTester::sphereHeightmap);
 
-//        this->addIntersectionTest(GeometryType::AABB, GeometryType::AABB, &CollisionTester::aabbAabb);
+      this->addIntersectionTest(GeometryType::AABB, GeometryType::AABB, &CollisionTester::aabbAabb);
 //        this->addIntersectionTest(GeometryType::AABB, GeometryType::OOBB, &CollisionTester::aabbOobb);
 //
 //        this->addIntersectionTest(GeometryType::OOBB, GeometryType::OOBB, &CollisionTester::oobbOobb);
@@ -336,7 +336,7 @@ protected:
    * AABB intersection tests
    */
   bool aabbAabb(const Geometry &aabb, const Geometry &anotherAabb) const {
-      return false;
+      return ((const AABB &)aabb).minkowskiDifference((const AABB &)anotherAabb).contains(vector(0, 0, 0));
   }
 
   bool aabbOobb(const Geometry &aabb, const Geometry &anotherObb) const {
