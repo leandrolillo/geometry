@@ -234,18 +234,6 @@ protected:
     return true;
   }
 
-
-
-  /**
-   * point sphere test
-   */
-
-  bool pointInSphere(const vector &point, const Sphere &sphere) const {
-      vector delta = sphere.getOrigin() - point;
-      return delta * delta <= sphere.getRadius() * sphere.getRadius();
-  }
-
-
   /**
    * Line intersection test
    */
@@ -314,7 +302,7 @@ protected:
       const Sphere &sphere = (const Sphere &)sphereGeometry;
       const AABB &aabb = (const AABB &)aabbGeometry;
 
-      return pointInSphere(aabb.closestPoint(sphere.getOrigin()), sphere);
+      return sphere.contains(aabb.closestPoint(sphere.getOrigin()));
   }
 
   bool sphereOobb(const Geometry &sphere, const Geometry &oobb) const {
@@ -328,7 +316,7 @@ protected:
     vector aabbClosestPoint = heightmap.closestPoint(sphere.getOrigin());
     aabbClosestPoint.y = heightmap.heightAt(aabbClosestPoint.x, aabbClosestPoint.z);
 
-    return pointInSphere(aabbClosestPoint, sphere);
+    return sphere.contains(aabbClosestPoint);
   }
 
 
@@ -457,25 +445,25 @@ protected:
   }
 
   std::vector<GeometryContact> sphereAabbContact(const Geometry &sphereGeometry, const Geometry &aabbGeometry) const {
-      const Sphere &sphere = (const Sphere &)sphereGeometry;
-      const AABB &aabb = (const AABB &)aabbGeometry;
+    const Sphere &sphere = (const Sphere &)sphereGeometry;
+    const AABB &aabb = (const AABB &)aabbGeometry;
 
-      vector aabbClosestPoint = aabb.closestPoint(sphere.getOrigin());
+    vector aabbClosestPoint = aabb.closestPoint(sphere.getOrigin());
 
-      if(pointInSphere(aabbClosestPoint, sphere)) {
-          vector delta = sphere.getOrigin() - aabbClosestPoint;
-          if(equalsZeroAbsoluteMargin(delta * delta)) {
-            aabbClosestPoint = aabb.closestSurfacePoint(sphere.getOrigin());
-            delta = aabbClosestPoint - sphere.getOrigin();
-          }
-          real distance = delta.modulo();
-          vector normal = delta * (1.0 / distance);
-          real penetration = sphere.getRadius() - distance;
-
-          return std::vector<GeometryContact> {GeometryContact(&sphere, &aabb, aabbClosestPoint, normal, 0.8f,  penetration) };
+    if(sphere.contains(aabbClosestPoint)) {
+      vector delta = sphere.getOrigin() - aabbClosestPoint;
+      if(equalsZeroAbsoluteMargin(delta * delta)) {
+        aabbClosestPoint = aabb.closestSurfacePoint(sphere.getOrigin());
+        delta = aabbClosestPoint - sphere.getOrigin();
       }
+      real distance = delta.modulo();
+      vector normal = delta * (1.0 / distance);
+      real penetration = sphere.getRadius() - distance;
 
-      return std::vector<GeometryContact>();
+      return std::vector<GeometryContact> {GeometryContact(&sphere, &aabb, aabbClosestPoint, normal, 0.8f,  penetration) };
+    }
+
+    return std::vector<GeometryContact>();
   }
 
   std::vector<GeometryContact> sphereOobbContact(const Geometry &sphereGeometry, const Geometry &oobbGeometry) const {
@@ -487,22 +475,21 @@ protected:
    * Non-accurate heightmap test. Returns data of the point directly below the sphere
    */
   std::vector<GeometryContact> sphereHeightmapContact(const Geometry &sphereGeometry, const Geometry &heightMapGeometry) const {
-  const Sphere &sphere = (const Sphere &)sphereGeometry;
-  const HeightMapGeometry &heightmap = (const HeightMapGeometry &)heightMapGeometry;
+    const Sphere &sphere = (const Sphere &)sphereGeometry;
+    const HeightMapGeometry &heightmap = (const HeightMapGeometry &)heightMapGeometry;
 
-      vector aabbClosestPoint = heightmap.closestPoint(sphere.getOrigin());
-      aabbClosestPoint.y = heightmap.heightAt(aabbClosestPoint.x, aabbClosestPoint.z);
+    vector aabbClosestPoint = heightmap.closestPoint(sphere.getOrigin());
+    aabbClosestPoint.y = heightmap.heightAt(aabbClosestPoint.x, aabbClosestPoint.z);
 
-      if(pointInSphere(aabbClosestPoint, sphere)) {
-          vector delta = sphere.getOrigin() - aabbClosestPoint;
-    real distance = delta.modulo();
-    //vector normal = delta * (1.0 / distance); // method 1 - upwards pointing normal
-    vector normal = heightmap.normalAt(aabbClosestPoint.x, aabbClosestPoint.z); // method 2 - triangle normal
-    real penetration = sphere.getRadius() - distance;
+    if(sphere.contains(aabbClosestPoint)) {
+      vector delta = sphere.getOrigin() - aabbClosestPoint;
+      real distance = delta.modulo();
+      //vector normal = delta * (1.0 / distance); // method 1 - upwards pointing normal
+      vector normal = heightmap.normalAt(aabbClosestPoint.x, aabbClosestPoint.z); // method 2 - triangle normal
+      real penetration = sphere.getRadius() - distance;
 
-    return std::vector<GeometryContact> {GeometryContact(&sphere, &heightMapGeometry, aabbClosestPoint, normal, 0.8f,  penetration) };
-      }
-
+      return std::vector<GeometryContact> {GeometryContact(&sphere, &heightMapGeometry, aabbClosestPoint, normal, 0.8f,  penetration) };
+    }
 
   return std::vector<GeometryContact>();
 }
