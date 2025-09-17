@@ -98,15 +98,19 @@ public:
   }
 };
 
-class Line: public Geometry {
+class Line: public Geometry { //Do we need lines or should this really be rays (meaning we ignore negative t in parametric ecuation)
   vector direction;
 public:
   Line(const vector &origin, const vector &direction) : Geometry(origin){
-      this->direction = direction.normalizado();
+      setDirection(direction);
   }
 
   const vector& getDirection() const {
       return this->direction;
+  }
+
+  void setDirection(const vector &direction) {
+    this->direction = direction.normalizado();
   }
 
   String toString() const override {
@@ -133,11 +137,26 @@ public:
       this->halfSizes = halfSizes;
   }
 
+
+  /**
+   * Returns bottom left back vertex
+   */
+  vector getMins() const {
+    return this->getOrigin() - this->halfSizes;
+  }
+
+  /**
+   * Returns top right front vertex
+   */
+  vector getMaxs() const {
+    return this->getOrigin() + this->halfSizes;
+  }
+
   /**
    * Returns the bottom left position of the aabb. On the other hand, Origin is the center.
    */
   vector getPosition() const {
-    return this->getOrigin()- halfSizes;
+    return getMins();
   }
 
   String toString() const override {
@@ -149,8 +168,8 @@ public:
   }
 
   bool contains(const vector &point) const {
-    vector mins = this->getOrigin() - this->halfSizes;
-    vector maxs = this->getOrigin() + this->halfSizes;
+    vector mins(getMins());
+    vector maxs(getMaxs());
 
     return mins.x <= point.x && point.x <= maxs.x &&
         mins.y <= point.y && point.y <= maxs.y &&
@@ -158,8 +177,8 @@ public:
   }
 
   AABB minkowskiDifference(const AABB &right) const {
-    vector minA = this->getOrigin() - this->halfSizes;
-    vector maxB = right.getOrigin() + right.halfSizes;
+    vector minA(this->getMins());
+    vector maxB(right.getMaxs());
 
     vector minMD = minA - maxB;
     vector halfSizesMD = this->halfSizes + right.halfSizes;
@@ -168,8 +187,8 @@ public:
   }
 
   vector closestPoint(const vector &target) const {
-      vector mins = this->getOrigin() - this->halfSizes;
-      vector maxs = this->getOrigin() + this->halfSizes;
+      vector mins(getMins());
+      vector maxs(getMaxs());
 
 
       return vector(std::max(mins.x, std::min(target.x, maxs.x)),

@@ -147,6 +147,55 @@ TEST_CASE("Aabb Aabb Intersections")
   CHECK(!intersectionTester.intersects((Geometry& )left, (Geometry& )right));
 }
 
+TEST_CASE("Ray Aabb Intersections") {
+  CollisionTester intersectionTester;
+
+  AABB aabb(vector(0, 0, 0), vector(1, 2, 3));
+  Line line(vector(0, 0, 0), vector(0, 0, -1));
+
+  CHECK(intersectionTester.intersects((Geometry &)aabb, (Geometry &)line));
+
+  line.setOrigin(vector(2, 0, 0));
+  CHECK(!intersectionTester.intersects((Geometry &)aabb, (Geometry &)line));
+
+  // x axis
+  line.setOrigin(vector(2, 0, 0));
+  line.setDirection(vector(-1, 0, 0));
+  CHECK(intersectionTester.intersects((Geometry &)aabb, (Geometry &)line));
+
+  line.setOrigin(vector(-2, 0, 0));
+  line.setDirection(vector(1, 0, 0));
+  CHECK(intersectionTester.intersects((Geometry &)aabb, (Geometry &)line));
+
+  line.setDirection(vector(-1, 0, 0));
+  CHECK(!intersectionTester.intersects((Geometry &)aabb, (Geometry &)line));
+
+  // y axis
+  line.setOrigin(vector(0, 3, 0));
+  line.setDirection(vector(0, -1, 0));
+  CHECK(intersectionTester.intersects((Geometry &)aabb, (Geometry &)line));
+
+  line.setOrigin(vector(0, -3, 0));
+  line.setDirection(vector(0, 1, 0));
+  CHECK(intersectionTester.intersects((Geometry &)aabb, (Geometry &)line));
+
+  line.setDirection(vector(0, -1, 0));
+  CHECK(!intersectionTester.intersects((Geometry &)aabb, (Geometry &)line));
+
+  // z axis
+  line.setOrigin(vector(0, 0, 4));
+  line.setDirection(vector(0, 0 , -1));
+  CHECK(intersectionTester.intersects((Geometry &)aabb, (Geometry &)line));
+
+  line.setOrigin(vector(0, 0, -4));
+  line.setDirection(vector(0, 0, 1));
+  CHECK(intersectionTester.intersects((Geometry &)aabb, (Geometry &)line));
+
+  line.setDirection(vector(0, 0, -1));
+  CHECK(!intersectionTester.intersects((Geometry &)aabb, (Geometry &)line));
+
+}
+
 TEST_CASE("Sphere Contacts")
 {
   CollisionTester intersectionTester;
