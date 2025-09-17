@@ -60,6 +60,11 @@ public:
       this->radius = radius;
   }
 
+  bool contains(const vector &point) const {
+    vector delta = getOrigin() - point;
+    return delta * delta <= radius * radius;
+  }
+
   String toString() const override {
       return "Sphere(origin: " + this->getOrigin().toString() + ", radius: " + std::to_string(this->radius) + ")";
   }
@@ -93,15 +98,19 @@ public:
   }
 };
 
-class Line: public Geometry {
+class Line: public Geometry { //Do we need lines or should this really be rays (meaning we ignore negative t in parametric ecuation)
   vector direction;
 public:
   Line(const vector &origin, const vector &direction) : Geometry(origin){
-      this->direction = direction.normalizado();
+      setDirection(direction);
   }
 
   const vector& getDirection() const {
       return this->direction;
+  }
+
+  void setDirection(const vector &direction) {
+    this->direction = direction.normalizado();
   }
 
   String toString() const override {
@@ -128,11 +137,26 @@ public:
       this->halfSizes = halfSizes;
   }
 
+
+  /**
+   * Returns bottom left back vertex
+   */
+  vector getMins() const {
+    return this->getOrigin() - this->halfSizes;
+  }
+
+  /**
+   * Returns top right front vertex
+   */
+  vector getMaxs() const {
+    return this->getOrigin() + this->halfSizes;
+  }
+
   /**
    * Returns the bottom left position of the aabb. On the other hand, Origin is the center.
    */
   vector getPosition() const {
-    return this->getOrigin()- halfSizes;
+    return getMins();
   }
 
   String toString() const override {
@@ -143,9 +167,28 @@ public:
       return GeometryType::AABB;
   }
 
+  bool contains(const vector &point) const {
+    vector mins(getMins());
+    vector maxs(getMaxs());
+
+    return mins.x <= point.x && point.x <= maxs.x &&
+        mins.y <= point.y && point.y <= maxs.y &&
+        mins.z <= point.z && point.z <= maxs.z;
+  }
+
+  AABB minkowskiDifference(const AABB &right) const {
+    vector minA(this->getMins());
+    vector maxB(right.getMaxs());
+
+    vector minMD = minA - maxB;
+    vector halfSizesMD = this->halfSizes + right.halfSizes;
+
+    return AABB(minMD + halfSizesMD, halfSizesMD);
+  }
+
   vector closestPoint(const vector &target) const {
-      vector mins = this->getOrigin() - this->getHalfSizes();
-      vector maxs = this->getOrigin() + this->getHalfSizes();
+      vector mins(getMins());
+      vector maxs(getMaxs());
 
 
       return vector(std::max(mins.x, std::min(target.x, maxs.x)),
@@ -160,21 +203,21 @@ public:
 
     real faceCoord = this->getOrigin().y + this->halfSizes.y;
     real faceDistanceSq = (faceCoord - target.y) * (faceCoord - target.y);
-    if(faceDistanceSq < minDistance) {
+    //if(faceDistanceSq < minDistance) {
       minDistance = faceDistanceSq;
       surfacePoint = vector(target.x, faceCoord, target.z);
-    }
+    //}
 
     faceCoord = this->getOrigin().y - this->halfSizes.y;
     faceDistanceSq = (faceCoord - target.y) * (faceCoord - target.y);
-    if(faceDistanceSq < minDistance) {
+    if(faceDistanceSq <= minDistance) {
       minDistance = faceDistanceSq;
       surfacePoint = vector(target.x, faceCoord, target.z);
     }
 
     faceCoord = this->getOrigin().x - this->halfSizes.x;
     faceDistanceSq = (faceCoord - target.x) * (faceCoord - target.x);
-    if(faceDistanceSq < minDistance) {
+    if(faceDistanceSq <= minDistance) {
       minDistance = faceDistanceSq;
       surfacePoint = vector(faceCoord, target.y, target.z);
     }

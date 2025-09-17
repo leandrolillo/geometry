@@ -31,23 +31,23 @@ public:
    * TODO: should only add supported tests and generate a report with these (maybe toString?)
    */
   void addIntersectionTests() {
-      this->addIntersectionTest(GeometryType::LINE, GeometryType::SPHERE, &CollisionTester::lineSphere);
+    this->addIntersectionTest(GeometryType::LINE, GeometryType::SPHERE, &CollisionTester::lineSphere);
 //        this->addIntersectionTest(GeometryType::LINE, GeometryType::PLANE, &CollisionTester::linePlane);
 //        this->addIntersectionTest(GeometryType::LINE, GeometryType::LINE, &CollisionTester::lineLine);
-//        this->addIntersectionTest(GeometryType::LINE, GeometryType::AABB, &CollisionTester::lineAabb);
+    this->addIntersectionTest(GeometryType::LINE, GeometryType::AABB, &CollisionTester::lineAabb);
 //        this->addIntersectionTest(GeometryType::LINE, GeometryType::OOBB, &CollisionTester::lineOobb);
 
-      this->addIntersectionTest(GeometryType::PLANE, GeometryType::SPHERE, &CollisionTester::planeSphere);
+    this->addIntersectionTest(GeometryType::PLANE, GeometryType::SPHERE, &CollisionTester::planeSphere);
 //        this->addIntersectionTest(GeometryType::PLANE, GeometryType::PLANE, &CollisionTester::planePlane);
 //        this->addIntersectionTest(GeometryType::PLANE, GeometryType::AABB, &CollisionTester::planeAabb);
 //        this->addIntersectionTest(GeometryType::PLANE, GeometryType::OOBB, &CollisionTester::planeOobb);
 
-      this->addIntersectionTest(GeometryType::SPHERE, GeometryType::SPHERE, &CollisionTester::sphereSphere);
-      this->addIntersectionTest(GeometryType::SPHERE, GeometryType::AABB, &CollisionTester::sphereAabb);
+    this->addIntersectionTest(GeometryType::SPHERE, GeometryType::SPHERE, &CollisionTester::sphereSphere);
+    this->addIntersectionTest(GeometryType::SPHERE, GeometryType::AABB, &CollisionTester::sphereAabb);
 //        this->addIntersectionTest(GeometryType::SPHERE, GeometryType::OOBB, &CollisionTester::sphereOobb);
-      this->addIntersectionTest(GeometryType::SPHERE, GeometryType::HEIGHTMAP, &CollisionTester::sphereHeightmap);
+    this->addIntersectionTest(GeometryType::SPHERE, GeometryType::HEIGHTMAP, &CollisionTester::sphereHeightmap);
 
-//        this->addIntersectionTest(GeometryType::AABB, GeometryType::AABB, &CollisionTester::aabbAabb);
+    this->addIntersectionTest(GeometryType::AABB, GeometryType::AABB, &CollisionTester::aabbAabb);
 //        this->addIntersectionTest(GeometryType::AABB, GeometryType::OOBB, &CollisionTester::aabbOobb);
 //
 //        this->addIntersectionTest(GeometryType::OOBB, GeometryType::OOBB, &CollisionTester::oobbOobb);
@@ -64,15 +64,15 @@ public:
 //        this->addContactTest(GeometryType::LINE, GeometryType::AABB, &CollisionTester::lineAabbContact);
 //        this->addContactTest(GeometryType::LINE, GeometryType::OOBB, &CollisionTester::lineOobbContact);
 
-      this->addContactTest(GeometryType::PLANE, GeometryType::SPHERE, &CollisionTester::planeSphereContact);
+    this->addContactTest(GeometryType::PLANE, GeometryType::SPHERE, &CollisionTester::planeSphereContact);
 //        this->addContactTest(GeometryType::PLANE, GeometryType::PLANE, &CollisionTester::planePlaneContact);
 //        this->addContactTest(GeometryType::PLANE, GeometryType::AABB, &CollisionTester::planeAabbContact);
 //        this->addContactTest(GeometryType::PLANE, GeometryType::OOBB, &CollisionTester::planeOobbContact);
 
-      this->addContactTest(GeometryType::SPHERE, GeometryType::SPHERE, &CollisionTester::sphereSphereContact);
-      this->addContactTest(GeometryType::SPHERE, GeometryType::AABB, &CollisionTester::sphereAabbContact);
+    this->addContactTest(GeometryType::SPHERE, GeometryType::SPHERE, &CollisionTester::sphereSphereContact);
+    this->addContactTest(GeometryType::SPHERE, GeometryType::AABB, &CollisionTester::sphereAabbContact);
 //        this->addContactTest(GeometryType::SPHERE, GeometryType::OOBB, &CollisionTester::sphereOobbContact);
-      this->addContactTest(GeometryType::SPHERE, GeometryType::HEIGHTMAP, &CollisionTester::sphereHeightmapContact);
+    this->addContactTest(GeometryType::SPHERE, GeometryType::HEIGHTMAP, &CollisionTester::sphereHeightmapContact);
 
 //        this->addContactTest(GeometryType::AABB, GeometryType::AABB, &CollisionTester::aabbAabbContact);
 //        this->addContactTest(GeometryType::AABB, GeometryType::OOBB, &CollisionTester::aabbOobbContact);
@@ -81,67 +81,67 @@ public:
   }
 
   virtual void addIntersectionTest(const GeometryType &typeOp1, const GeometryType &typeOp2, bool (CollisionTester::*intersectionTest)(const Geometry &, const Geometry &) const) {
-      intersectionTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp1, typeOp2)] = intersectionTest;
+    intersectionTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp1, typeOp2)] = intersectionTest;
 
-      //TODO: check we're not adding more than desired
-      intersectionTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp1, GeometryType::FRUSTUM)] = &CollisionTester::geometryFrustum;
-      intersectionTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp2, GeometryType::FRUSTUM)] = &CollisionTester::geometryFrustum;
+    //TODO: check we're not adding more than desired
+    intersectionTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp1, GeometryType::FRUSTUM)] = &CollisionTester::geometryFrustum;
+    intersectionTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp2, GeometryType::FRUSTUM)] = &CollisionTester::geometryFrustum;
 
-      intersectionTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp1, GeometryType::HIERARCHY)] = &CollisionTester::geometryHierarchy;
-      intersectionTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp2, GeometryType::HIERARCHY)] = &CollisionTester::geometryHierarchy;
-      intersectionTestsTable[std::pair<const GeometryType &, const GeometryType &>(GeometryType::HIERARCHY, GeometryType::HIERARCHY)] = &CollisionTester::geometryHierarchy; // TODO: this might be a special case
+    intersectionTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp1, GeometryType::HIERARCHY)] = &CollisionTester::geometryHierarchy;
+    intersectionTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp2, GeometryType::HIERARCHY)] = &CollisionTester::geometryHierarchy;
+    intersectionTestsTable[std::pair<const GeometryType &, const GeometryType &>(GeometryType::HIERARCHY, GeometryType::HIERARCHY)] = &CollisionTester::geometryHierarchy; // TODO: this might be a special case
 
-      intersectionTestsTable[std::pair<const GeometryType &, const GeometryType &>(GeometryType::HIERARCHY, GeometryType::FRUSTUM)] = &CollisionTester::geometryFrustum; // TODO: this might be a special case
+    intersectionTestsTable[std::pair<const GeometryType &, const GeometryType &>(GeometryType::HIERARCHY, GeometryType::FRUSTUM)] = &CollisionTester::geometryFrustum; // TODO: this might be a special case
   }
 
   virtual void addContactTest(const GeometryType &typeOp1, const GeometryType &typeOp2, std::vector<GeometryContact> (CollisionTester::*contactTest)(const Geometry &, const Geometry &) const) {
-      contactTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp1, typeOp2)] = contactTest;
+    contactTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp1, typeOp2)] = contactTest;
 
-      //TODO: check we're not adding more than desired
-      contactTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp1, GeometryType::HIERARCHY)] = &CollisionTester::geometryHierarchyContact;
-      contactTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp2, GeometryType::HIERARCHY)] = &CollisionTester::geometryHierarchyContact;
-      contactTestsTable[std::pair<const GeometryType &, const GeometryType &>(GeometryType::HIERARCHY, GeometryType::HIERARCHY)] = &CollisionTester::geometryHierarchyContact; // TODO: this might be a special case
+    //TODO: check we're not adding more than desired
+    contactTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp1, GeometryType::HIERARCHY)] = &CollisionTester::geometryHierarchyContact;
+    contactTestsTable[std::pair<const GeometryType &, const GeometryType &>(typeOp2, GeometryType::HIERARCHY)] = &CollisionTester::geometryHierarchyContact;
+    contactTestsTable[std::pair<const GeometryType &, const GeometryType &>(GeometryType::HIERARCHY, GeometryType::HIERARCHY)] = &CollisionTester::geometryHierarchyContact; // TODO: this might be a special case
   }
 
 
   virtual bool intersects(const Geometry &op1, const Geometry & op2) const {
-      std::pair<GeometryType, GeometryType > key(op1.getType(), op2.getType());
+    std::pair<GeometryType, GeometryType > key(op1.getType(), op2.getType());
 
-      if(intersectionTestsTable.count(key) > 0) {
-          bool (CollisionTester::*testFunction)(const Geometry &, const Geometry &) const;
-          testFunction = intersectionTestsTable.at(key);
-          return (this->*testFunction)(op1, op2);
-      } else {
-          std::pair<GeometryType, GeometryType > inverseKey(op2.getType(), op1.getType());
+    if(intersectionTestsTable.count(key) > 0) {
+        bool (CollisionTester::*testFunction)(const Geometry &, const Geometry &) const;
+        testFunction = intersectionTestsTable.at(key);
+        return (this->*testFunction)(op1, op2);
+    } else {
+        std::pair<GeometryType, GeometryType > inverseKey(op2.getType(), op1.getType());
 
-          if(intersectionTestsTable.count(inverseKey) > 0) {
-              bool (CollisionTester::*testFunction)(const Geometry &, const Geometry &) const;
-              testFunction = intersectionTestsTable.at(inverseKey);
-              return (this->*testFunction)(op2, op1);
-          }
-      }
+        if(intersectionTestsTable.count(inverseKey) > 0) {
+            bool (CollisionTester::*testFunction)(const Geometry &, const Geometry &) const;
+            testFunction = intersectionTestsTable.at(inverseKey);
+            return (this->*testFunction)(op2, op1);
+        }
+    }
 
-      return false;
+    return false;
   }
 
   virtual std::vector<GeometryContact>  detectCollision(const Geometry &op1, const Geometry &op2) const {
-      std::pair<GeometryType, GeometryType > key(op1.getType(), op2.getType());
+    std::pair<GeometryType, GeometryType > key(op1.getType(), op2.getType());
 
-      if(contactTestsTable.count(key) > 0) {
-          std::vector<GeometryContact> (CollisionTester::*testFunction)(const Geometry &, const Geometry &) const;
-          testFunction = contactTestsTable.at(key);
-          return (this->*testFunction)(op1, op2);
-      } else {
-          std::pair<GeometryType, GeometryType > inverseKey(op2.getType(), op1.getType());
+    if(contactTestsTable.count(key) > 0) {
+        std::vector<GeometryContact> (CollisionTester::*testFunction)(const Geometry &, const Geometry &) const;
+        testFunction = contactTestsTable.at(key);
+        return (this->*testFunction)(op1, op2);
+    } else {
+        std::pair<GeometryType, GeometryType > inverseKey(op2.getType(), op1.getType());
 
-          if(contactTestsTable.count(inverseKey) > 0) {
-              std::vector<GeometryContact> (CollisionTester::*testFunction)(const Geometry &, const Geometry &) const;
-              testFunction = contactTestsTable.at(inverseKey);
-              return (this->*testFunction)(op2, op1);
-          }
-      }
+        if(contactTestsTable.count(inverseKey) > 0) {
+            std::vector<GeometryContact> (CollisionTester::*testFunction)(const Geometry &, const Geometry &) const;
+            testFunction = contactTestsTable.at(inverseKey);
+            return (this->*testFunction)(op2, op1);
+        }
+    }
 
-      return std::vector<GeometryContact>();
+    return std::vector<GeometryContact>();
   }
 
   virtual String toString() const {
@@ -234,30 +234,17 @@ protected:
     return true;
   }
 
-
-
-  /**
-   * point sphere test
-   */
-
-  bool pointInSphere(const vector &point, const Sphere &sphere) const {
-      vector delta = sphere.getOrigin() - point;
-      return delta * delta <= sphere.getRadius() * sphere.getRadius();
-  }
-
-
   /**
    * Line intersection test
    */
   bool lineSphere(const Geometry &lineGeometry, const Geometry &sphereGeometry) const {
-      const Line &line = (const Line &) lineGeometry;
-      const Sphere &sphere = (const Sphere &) sphereGeometry;
+    const Line &line = (const Line &) lineGeometry;
+    const Sphere &sphere = (const Sphere &) sphereGeometry;
 
-      real projection = (sphere.getOrigin() - line.getOrigin()) * line.getDirection();
-      vector projectedSphereCenter = line.getOrigin() + line.getDirection() * projection;
-      vector lineToSphere = sphere.getOrigin() - projectedSphereCenter;
+    real projection = (sphere.getOrigin() - line.getOrigin()) * line.getDirection();
+    vector projectedSphereCenter = line.getOrigin() + line.getDirection() * projection;
 
-      return (lineToSphere * lineToSphere <= sphere.getRadius() * sphere.getRadius());
+    return sphere.contains(projectedSphereCenter);
   }
 
   bool linePlane(const Geometry &line, const Geometry &plane) const {
@@ -268,8 +255,65 @@ protected:
      return false;
   }
 
-  bool lineAabb(const Geometry &line, const Geometry &aabb) const {
-         return false;
+  /**
+   * From: https://research.ncl.ac.uk/game/mastersdegree/gametechnologies/physicstutorials/1raycasting/Physics%20-%20Raycasting.pdf
+   * Note: This is really a ray/aabb intersection test: negative t values are ignored. Do we need lines?
+   */
+  bool lineAabb(const Geometry &lineGeometry, const Geometry &aabbGeometry) const {
+    const Line &line = (const Line &)lineGeometry;
+    const AABB &aabb = (const AABB &)aabbGeometry;
+
+    real maxT = REAL_MIN;
+
+    vector aabbMins = aabb.getMins();
+    vector aabbMaxs = aabb.getMaxs();
+    real t;
+
+    if(line.getDirection().x > 0) { //if ray is going up, only compare to bottom of aabb
+      //Lorigin.x + Ldirection.x * t = AABBmins.x  <-- line / axis aligned plane equation
+      //t = (AABBmins.x - Lorigin.x) / Ldirection.x
+      t = aabbMins.x - line.getOrigin().x / line.getDirection().x;
+      if(t > maxT) {
+        maxT = t;
+      }
+    } else if(line.getDirection().x < 0) { //Otherwise compare to top of aabb. Skip direction == 0: divide by zero
+      t = aabbMaxs.x - line.getOrigin().x / line.getDirection().x;
+      if(t > maxT) {
+        maxT = t;
+      }
+    }
+
+    //Same checks on other axes.
+    if(line.getDirection().y > 0) { //if ray is going up, only compare to bottom of aabb
+      t = aabbMins.y - line.getOrigin().y / line.getDirection().y;
+      if(t > maxT) {
+        maxT = t;
+      }
+    } else if(line.getDirection().y < 0) { //skip direction == 0: divide by zero
+      t = aabbMaxs.y - line.getOrigin().y / line.getDirection().y;
+      if(t > maxT) {
+        maxT = t;
+      }
+    }
+
+    if(line.getDirection().z > 0) { //if ray is going up, only compare to bottom of aabb
+      t = aabbMins.z - line.getOrigin().z / line.getDirection().z;
+      if(t > maxT) {
+        maxT = t;
+      }
+    } else if(line.getDirection().z < 0) { //skip direction == 0: divide by zero
+      t = aabbMaxs.z - line.getOrigin().z / line.getDirection().z;
+      if(t > maxT) {
+        maxT = t;
+      }
+    }
+
+    if(maxT >= 0) {
+      vector intersection = line.getOrigin() + line.getDirection() * maxT; // Farthest intersection between ray and one of the 3 closer planes of the aabb. ray and aabb are intersecting if the point is inside the aabb.
+      return aabb.contains(intersection);
+    }
+
+    return false;
   }
 
   bool lineOobb(const Geometry &line, const Geometry &oobb) const {
@@ -314,7 +358,7 @@ protected:
       const Sphere &sphere = (const Sphere &)sphereGeometry;
       const AABB &aabb = (const AABB &)aabbGeometry;
 
-      return pointInSphere(aabb.closestPoint(sphere.getOrigin()), sphere);
+      return sphere.contains(aabb.closestPoint(sphere.getOrigin()));
   }
 
   bool sphereOobb(const Geometry &sphere, const Geometry &oobb) const {
@@ -328,7 +372,7 @@ protected:
     vector aabbClosestPoint = heightmap.closestPoint(sphere.getOrigin());
     aabbClosestPoint.y = heightmap.heightAt(aabbClosestPoint.x, aabbClosestPoint.z);
 
-    return pointInSphere(aabbClosestPoint, sphere);
+    return sphere.contains(aabbClosestPoint);
   }
 
 
@@ -336,7 +380,7 @@ protected:
    * AABB intersection tests
    */
   bool aabbAabb(const Geometry &aabb, const Geometry &anotherAabb) const {
-      return false;
+      return ((const AABB &)aabb).minkowskiDifference((const AABB &)anotherAabb).contains(vector(0, 0, 0));
   }
 
   bool aabbOobb(const Geometry &aabb, const Geometry &anotherObb) const {
@@ -457,25 +501,25 @@ protected:
   }
 
   std::vector<GeometryContact> sphereAabbContact(const Geometry &sphereGeometry, const Geometry &aabbGeometry) const {
-      const Sphere &sphere = (const Sphere &)sphereGeometry;
-      const AABB &aabb = (const AABB &)aabbGeometry;
+    const Sphere &sphere = (const Sphere &)sphereGeometry;
+    const AABB &aabb = (const AABB &)aabbGeometry;
 
-      vector aabbClosestPoint = aabb.closestPoint(sphere.getOrigin());
+    vector aabbClosestPoint = aabb.closestPoint(sphere.getOrigin());
 
-      if(pointInSphere(aabbClosestPoint, sphere)) {
-          vector delta = sphere.getOrigin() - aabbClosestPoint;
-          if(equalsZeroAbsoluteMargin(delta * delta)) {
-            aabbClosestPoint = aabb.closestSurfacePoint(sphere.getOrigin());
-            delta = aabbClosestPoint - sphere.getOrigin();
-          }
-          real distance = delta.modulo();
-          vector normal = delta * (1.0 / distance);
-          real penetration = sphere.getRadius() - distance;
-
-          return std::vector<GeometryContact> {GeometryContact(&sphere, &aabb, aabbClosestPoint, normal, 0.8f,  penetration) };
+    if(sphere.contains(aabbClosestPoint)) {
+      vector delta = sphere.getOrigin() - aabbClosestPoint;
+      if(equalsZeroAbsoluteMargin(delta * delta)) {
+        aabbClosestPoint = aabb.closestSurfacePoint(sphere.getOrigin());
+        delta = aabbClosestPoint - sphere.getOrigin();
       }
+      real distance = delta.modulo();
+      vector normal = delta * (1.0 / distance);
+      real penetration = sphere.getRadius() - distance;
 
-      return std::vector<GeometryContact>();
+      return std::vector<GeometryContact> {GeometryContact(&sphere, &aabb, aabbClosestPoint, normal, 0.8f,  penetration) };
+    }
+
+    return std::vector<GeometryContact>();
   }
 
   std::vector<GeometryContact> sphereOobbContact(const Geometry &sphereGeometry, const Geometry &oobbGeometry) const {
@@ -487,22 +531,21 @@ protected:
    * Non-accurate heightmap test. Returns data of the point directly below the sphere
    */
   std::vector<GeometryContact> sphereHeightmapContact(const Geometry &sphereGeometry, const Geometry &heightMapGeometry) const {
-  const Sphere &sphere = (const Sphere &)sphereGeometry;
-  const HeightMapGeometry &heightmap = (const HeightMapGeometry &)heightMapGeometry;
+    const Sphere &sphere = (const Sphere &)sphereGeometry;
+    const HeightMapGeometry &heightmap = (const HeightMapGeometry &)heightMapGeometry;
 
-      vector aabbClosestPoint = heightmap.closestPoint(sphere.getOrigin());
-      aabbClosestPoint.y = heightmap.heightAt(aabbClosestPoint.x, aabbClosestPoint.z);
+    vector aabbClosestPoint = heightmap.closestPoint(sphere.getOrigin());
+    aabbClosestPoint.y = heightmap.heightAt(aabbClosestPoint.x, aabbClosestPoint.z);
 
-      if(pointInSphere(aabbClosestPoint, sphere)) {
-          vector delta = sphere.getOrigin() - aabbClosestPoint;
-    real distance = delta.modulo();
-    //vector normal = delta * (1.0 / distance); // method 1 - upwards pointing normal
-    vector normal = heightmap.normalAt(aabbClosestPoint.x, aabbClosestPoint.z); // method 2 - triangle normal
-    real penetration = sphere.getRadius() - distance;
+    if(sphere.contains(aabbClosestPoint)) {
+      vector delta = sphere.getOrigin() - aabbClosestPoint;
+      real distance = delta.modulo();
+      //vector normal = delta * (1.0 / distance); // method 1 - upwards pointing normal
+      vector normal = heightmap.normalAt(aabbClosestPoint.x, aabbClosestPoint.z); // method 2 - triangle normal
+      real penetration = sphere.getRadius() - distance;
 
-    return std::vector<GeometryContact> {GeometryContact(&sphere, &heightMapGeometry, aabbClosestPoint, normal, 0.8f,  penetration) };
-      }
-
+      return std::vector<GeometryContact> {GeometryContact(&sphere, &heightMapGeometry, aabbClosestPoint, normal, 0.8f,  penetration) };
+    }
 
   return std::vector<GeometryContact>();
 }
