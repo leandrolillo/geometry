@@ -1,4 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
+#include "mathMatchers.h"
+
 #include "Geometry.h"
 #include "CollisionTester.h"
 
@@ -209,7 +212,7 @@ TEST_CASE("Sphere Contacts")
 
   std::vector<GeometryContact> contacts = intersectionTester.detectCollision((Geometry&) sphere, (Geometry&) anotherSphere);
   REQUIRE(!contacts.empty());
-  GeometryContact contact = *contacts.begin();
+  GeometryContact &contact = contacts.front();
 
   CHECK((void* )&sphere == (void* )contact.getGeometryA());
   CHECK((void* )&anotherSphere == (void* )contact.getGeometryB());
@@ -223,4 +226,80 @@ TEST_CASE("Sphere Contacts")
   anotherSphere.setOrigin(vector(0, 6, 0));
   contacts = intersectionTester.detectCollision((Geometry&) sphere, (Geometry&) anotherSphere);
   REQUIRE(contacts.empty());
+}
+
+TEST_CASE("Aabb Aabb Contacts")
+{
+  CollisionTester intersectionTester;
+
+  AABB left(vector(0, 0, 0), vector(1, 2, 3));
+
+  /*X axis*/
+  AABB right(vector(1.9, 0, 0), vector(1, 1, 1));
+  std::vector<GeometryContact> contacts = intersectionTester.detectCollision(left, right);
+  REQUIRE(!contacts.empty());
+  CHECK(&left == contacts.front().getGeometryA());
+  CHECK(&right == contacts.front().getGeometryB());
+  CHECK_THAT(contacts.front().getPenetration(), Catch::Matchers::WithinAbs(0.1, 0.2));
+  CHECK_THAT(contacts.front().getNormal(), EqualsVector(vector(-1, 0, 0)));
+
+  right.setOrigin(vector(2.1, 0, 0));
+  REQUIRE(intersectionTester.detectCollision(left, right).empty());
+
+  right.setOrigin(vector(-1.9, 0, 0));
+  contacts = intersectionTester.detectCollision(left, right);
+  REQUIRE(!contacts.empty());
+  CHECK(&left == contacts.front().getGeometryA());
+  CHECK(&right == contacts.front().getGeometryB());
+  CHECK_THAT(contacts.front().getPenetration(), Catch::Matchers::WithinAbs(0.1, 0.2));
+  CHECK_THAT(contacts.front().getNormal(), EqualsVector(vector(1, 0, 0)));
+
+  right.setOrigin(vector(-2.1, 0, 0));
+  REQUIRE(intersectionTester.detectCollision(left, right).empty());
+
+  //  /*Y axis*/
+  right.setOrigin(vector(0, 2.9, 0));
+  contacts = intersectionTester.detectCollision(left, right);
+  REQUIRE(!contacts.empty());
+  CHECK(&left == contacts.front().getGeometryA());
+  CHECK(&right == contacts.front().getGeometryB());
+  CHECK_THAT(contacts.front().getPenetration(), Catch::Matchers::WithinAbs(0.1, 0.2));
+  CHECK_THAT(contacts.front().getNormal(), EqualsVector(vector(0, -1, 0)));
+
+  right.setOrigin(vector(0, 3.1, 0));
+  REQUIRE(intersectionTester.detectCollision(left, right).empty());
+
+  right.setOrigin(vector(0, -2.9, 0));
+  contacts = intersectionTester.detectCollision(left, right);
+  REQUIRE(!contacts.empty());
+  CHECK(&left == contacts.front().getGeometryA());
+  CHECK(&right == contacts.front().getGeometryB());
+  CHECK_THAT(contacts.front().getPenetration(), Catch::Matchers::WithinAbs(0.1, 0.2));
+  CHECK_THAT(contacts.front().getNormal(), EqualsVector(vector(0, 1, 0)));
+
+  right.setOrigin(vector(0, -3.1, 0));
+  REQUIRE(intersectionTester.detectCollision(left, right).empty());
+
+  /*Z axis*/
+  right.setOrigin(vector(0, 0, 3.9));
+  contacts = intersectionTester.detectCollision(left, right);
+  REQUIRE(!contacts.empty());
+  CHECK(&left == contacts.front().getGeometryA());
+  CHECK(&right == contacts.front().getGeometryB());
+  CHECK_THAT(contacts.front().getPenetration(), Catch::Matchers::WithinAbs(0.1, 0.2));
+  CHECK_THAT(contacts.front().getNormal(), EqualsVector(vector(0, 0, -1)));
+
+  right.setOrigin(vector(0, 0, 4.1));
+  REQUIRE(intersectionTester.detectCollision(left, right).empty());
+
+  right.setOrigin(vector(0, 0, -3.9));
+  contacts = intersectionTester.detectCollision(left, right);
+  REQUIRE(!contacts.empty());
+  CHECK(&left == contacts.front().getGeometryA());
+  CHECK(&right == contacts.front().getGeometryB());
+  CHECK_THAT(contacts.front().getPenetration(), Catch::Matchers::WithinAbs(0.1, 0.2));
+  CHECK_THAT(contacts.front().getNormal(), EqualsVector(vector(0, 0, 1)));
+
+  right.setOrigin(vector(0, 0, -4.1));
+  REQUIRE(intersectionTester.detectCollision(left, right).empty());
 }
