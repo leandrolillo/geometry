@@ -23,6 +23,7 @@ enum class GeometryType {
 
 class Geometry {
   vector origin; //keep this property private and use getOrigin instead.
+  bool _status = true;
 public:
   Geometry(const vector &origin) {
       this->origin = origin;
@@ -37,6 +38,16 @@ public:
   virtual void setOrigin(const vector &origin) {
       this->origin = origin;
   }
+
+  bool getStatus() const {
+    return this->_status;
+  }
+
+  Geometry &setStatus(bool active) {
+    this->_status = active;
+    return *this;
+  }
+
 
   virtual String toString() const {
       return "Geometry(origin: " + origin.toString() + ")";
