@@ -74,7 +74,7 @@ public:
 //        this->addContactTest(GeometryType::SPHERE, GeometryType::OOBB, &CollisionTester::sphereOobbContact);
     this->addContactTest(GeometryType::SPHERE, GeometryType::HEIGHTMAP, &CollisionTester::sphereHeightmapContact);
 
-//        this->addContactTest(GeometryType::AABB, GeometryType::AABB, &CollisionTester::aabbAabbContact);
+        this->addContactTest(GeometryType::AABB, GeometryType::AABB, &CollisionTester::aabbAabbContact);
 //        this->addContactTest(GeometryType::AABB, GeometryType::OOBB, &CollisionTester::aabbOobbContact);
 //
 //        this->addContactTest(GeometryType::OOBB, GeometryType::OOBB, &CollisionTester::oobbOobbContact);
@@ -558,6 +558,15 @@ protected:
   std::vector<GeometryContact> aabbAabbContact(const Geometry &aabbGeometry, const Geometry &anotherAabbGeometry) const {
       const AABB &aabb = (const AABB &)aabbGeometry;
       const AABB &anotherAabb = (const AABB &)anotherAabbGeometry;
+
+      AABB minskowskiDifference = aabb.minkowskiDifference(anotherAabb);
+
+      if(minskowskiDifference.contains(vector(0, 0, 0))) {
+        vector penetrationVector = minskowskiDifference.closestSurfacePoint(vector(0, 0, 0));
+        real penetration = penetrationVector.modulo();
+
+        return std::vector<GeometryContact> {GeometryContact(&aabb, &anotherAabb, anotherAabb.getOrigin() + penetrationVector, penetrationVector * ((real)-1 / penetration), 0.8f, penetration)};
+      }
 
       return std::vector<GeometryContact>();
   }
