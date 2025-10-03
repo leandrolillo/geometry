@@ -164,10 +164,18 @@ public:
   }
 
   /**
-   * Returns the bottom left position of the aabb. On the other hand, Origin is the center.
+   * Returns the bottom-left-near position of the aabb. On the other hand, Origin is the center.
    */
   vector getPosition() const {
     return getMins();
+  }
+
+  /**
+   * Sets the bottom-left-near position of the aabb. On the other hand, Origin is the center.
+   */
+
+  void setPosition(const vector &position) {
+    setOrigin(position + halfSizes);
   }
 
   String toString() const override {
