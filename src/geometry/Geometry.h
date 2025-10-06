@@ -57,7 +57,9 @@ public:
   }
 
   void onCollision(GeometryContact &contact) {
-    this->_onCollision(contact);
+    if(_onCollision) {
+      this->_onCollision(contact);
+    }
   }
 
 

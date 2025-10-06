@@ -17,9 +17,13 @@ TEST_CASE("Sphere Methods")
   CHECK(sphere.contains(vector(1, 1, 1).normalizado() * 1.9));
   CHECK(!sphere.contains(vector(1, 1, 1).normalizado() * 2.1));
 
-  unsigned int onCollisionHandlerInvokation = 0;
-  sphere.setOnCollisionHandler([&onCollisionHandlerInvokation](GeometryContact &contact) { onCollisionHandlerInvokation++; });
   GeometryContact contact(null, null, vector(), vector(), 0.0, 0.0);
+
+  unsigned int onCollisionHandlerInvokation = 0;
+  sphere.onCollision(contact);
+  CHECK(onCollisionHandlerInvokation == 0);
+
+  sphere.setOnCollisionHandler([&onCollisionHandlerInvokation](GeometryContact &contact) { onCollisionHandlerInvokation++; });
   sphere.onCollision(contact);
   CHECK(onCollisionHandlerInvokation == 1);
 }
