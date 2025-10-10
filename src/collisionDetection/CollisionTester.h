@@ -454,7 +454,7 @@ protected:
           real penetration = sphere.getRadius() - distance;
           vector intersection = sphere.getOrigin() - (normal * sphere.getRadius());
 
-          return std::vector<GeometryContact> {GeometryContact(&plane, &sphere, intersection, normal, 0.8f, penetration) };
+          return std::vector<GeometryContact> {GeometryContact(&plane, &sphere, intersection, normal, penetration) };
       }
 
       return std::vector<GeometryContact>();
@@ -494,7 +494,7 @@ protected:
           vector normal = delta * (1.0 / distance);
           real penetration = radiuses - distance;
           vector intersection = sphere.getOrigin() + (normal * sphere.getRadius());
-          return std::vector<GeometryContact> {GeometryContact(&sphere, &anotherSphere, intersection, normal, 0.8f,  penetration) };
+          return std::vector<GeometryContact> {GeometryContact(&sphere, &anotherSphere, intersection, normal, penetration) };
       }
 
       return std::vector<GeometryContact>();
@@ -516,7 +516,7 @@ protected:
       vector normal = delta * (1.0 / distance);
       real penetration = sphere.getRadius() - distance;
 
-      return std::vector<GeometryContact> {GeometryContact(&sphere, &aabb, aabbClosestPoint, normal, 0.8f,  penetration) };
+      return std::vector<GeometryContact> {GeometryContact(&sphere, &aabb, aabbClosestPoint, normal, penetration) };
     }
 
     return std::vector<GeometryContact>();
@@ -544,7 +544,7 @@ protected:
       vector normal = heightmap.normalAt(aabbClosestPoint.x, aabbClosestPoint.z); // method 2 - triangle normal
       real penetration = sphere.getRadius() - distance;
 
-      return std::vector<GeometryContact> {GeometryContact(&sphere, &heightMapGeometry, aabbClosestPoint, normal, 0.8f,  penetration) };
+      return std::vector<GeometryContact> {GeometryContact(&sphere, &heightMapGeometry, aabbClosestPoint, normal, penetration) };
     }
 
   return std::vector<GeometryContact>();
@@ -565,7 +565,7 @@ protected:
         vector penetrationVector = minskowskiDifference.closestSurfacePoint(vector(0, 0, 0));
         real penetration = penetrationVector.modulo();
 
-        return std::vector<GeometryContact> {GeometryContact(&aabb, &anotherAabb, anotherAabb.getOrigin() + penetrationVector, penetrationVector * ((real)-1 / penetration), 0.8f, penetration)};
+        return std::vector<GeometryContact> {GeometryContact(&aabb, &anotherAabb, anotherAabb.getOrigin() + penetrationVector, penetrationVector * ((real)-1 / penetration), penetration)};
       }
 
       return std::vector<GeometryContact>();
