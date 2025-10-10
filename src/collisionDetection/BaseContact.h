@@ -11,17 +11,15 @@
 class BaseContact {
 protected:
   vector normal;
-  vector intersection;
+  vector intersection; //we might want to have different intersections per colliding object
   real penetration {0};
-  real restitution {0};
+
 
 public:
-  BaseContact(const vector &intersection, const vector &normal,
-      real restitution, real penetration = 0.0) {
+  BaseContact(const vector &intersection, const vector &normal, real penetration = 0.0) {
     this->intersection = intersection;
     this->normal = normal;
     this->penetration = penetration;
-    this->restitution = restitution;
   }
 
   const vector& getNormal() const {
@@ -34,10 +32,6 @@ public:
 
   real getPenetration() const {
     return this->penetration;
-  }
-
-  real getRestitution() const {
-    return this->restitution;
   }
 
   bool isIntersecting() const {

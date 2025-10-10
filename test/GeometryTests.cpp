@@ -1,4 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
+#include "mathMatchers.h"
+
 #include "Geometry.h"
 #include "CollisionTester.h"
 
@@ -13,7 +16,56 @@ TEST_CASE("Sphere Methods")
 
   CHECK(sphere.contains(vector(1, 1, 1).normalizado() * 1.9));
   CHECK(!sphere.contains(vector(1, 1, 1).normalizado() * 2.1));
+
+  GeometryContact contact(null, null, vector(), vector(), 0.0);
+
+  unsigned int onCollisionHandlerInvokation = 0;
+  sphere.onCollision(contact);
+  CHECK(onCollisionHandlerInvokation == 0);
+
+  sphere.setOnCollisionHandler([&onCollisionHandlerInvokation](GeometryContact &contact) { onCollisionHandlerInvokation++; });
+  sphere.onCollision(contact);
+  CHECK(onCollisionHandlerInvokation == 1);
 }
+
+TEST_CASE("AABB Methods") {
+  AABB aabb(vector(0, 0, 0), vector(1, 2, 3));
+  CHECK(aabb.getMins() == vector(-1, -2, -3));
+  CHECK(aabb.getMaxs() == vector(1, 2, 3));
+  CHECK(aabb.getPosition() == vector(-1, -2, -3));
+
+  aabb.setPosition(vector(0, 0, 0));
+  CHECK(aabb.getOrigin() == vector(1, 2, 3));
+
+  aabb.setOrigin(vector(0, 0, 0));
+  CHECK(aabb.contains(vector(-0.99, -1.99, -2.99)));
+  CHECK(!aabb.contains(vector(-1.1, -1.99, -2.99)));
+  CHECK(!aabb.contains(vector(-0.99, -2.1, -2.99)));
+  CHECK(!aabb.contains(vector(-0.99, -1.99, -3.1)));
+
+  //contains
+  CHECK(aabb.contains(vector(0.99, 1.99, 2.99)));
+  CHECK(!aabb.contains(vector(1.1, 1.99, 2.99)));
+  CHECK(!aabb.contains(vector(0.99, 2.1, 2.99)));
+  CHECK(!aabb.contains(vector(0.99, 1.99, 3.1)));
+
+  //closestPoint
+  CHECK(aabb.closestPoint(vector(0.5, 1, 1)) == vector(0.5, 1, 1));
+  CHECK(aabb.closestPoint(vector(3, 6, 12)) == vector(1, 2, 3));
+
+  //closestSurfacePoint
+  CHECK(aabb.closestSurfacePoint(vector(0.5, 1, 1)) == vector(1, 1, 1));
+  CHECK(aabb.closestPoint(vector(3, 6, 12)) == vector(1, 2, 3));
+
+  AABB right(vector(1, 1, 1), vector(1, 2, 3));
+  AABB minkowskiDifference = aabb.minkowskiDifference(right);
+
+  //vector center = vector(-1, -2, -3) - vector(2, 3, 4) + vector(2, 4, 6) = vector(-1, -1, -1);
+  CHECK(minkowskiDifference.getOrigin() == vector(-1.0, -1.0, -1.0));
+  CHECK(minkowskiDifference.getHalfSizes() == vector(2.0, 4.0, 6.0));
+}
+
+
 
 TEST_CASE("Sphere Intersections")
 {
@@ -85,21 +137,6 @@ TEST_CASE("Sphere AABB Intersection (troubleshooting bug)") {
   CHECK(contacts.size() > 0);
 
 }
-
-TEST_CASE("Aabb Methods")
-{
-  AABB aabb(vector(0, 0, 0), vector(1, 2, 3));
-  CHECK(aabb.contains(vector(0.99, 1.99, 2.99)));
-  CHECK(!aabb.contains(vector(1.1, 2.1, 3.1)));
-
-  CHECK(aabb.closestPoint(vector(0.5, 1, 1)) == vector(0.5, 1, 1));
-  CHECK(aabb.closestPoint(vector(3, 6, 12)) == vector(1, 2, 3));
-
-  CHECK(aabb.closestSurfacePoint(vector(0.5, 1, 1)) == vector(1, 1, 1));
-  CHECK(aabb.closestPoint(vector(3, 6, 12)) == vector(1, 2, 3));
-
-}
-
 
 TEST_CASE("Aabb Aabb Intersections")
 {
@@ -209,7 +246,7 @@ TEST_CASE("Sphere Contacts")
 
   std::vector<GeometryContact> contacts = intersectionTester.detectCollision((Geometry&) sphere, (Geometry&) anotherSphere);
   REQUIRE(!contacts.empty());
-  GeometryContact contact = *contacts.begin();
+  GeometryContact &contact = contacts.front();
 
   CHECK((void* )&sphere == (void* )contact.getGeometryA());
   CHECK((void* )&anotherSphere == (void* )contact.getGeometryB());
@@ -223,4 +260,80 @@ TEST_CASE("Sphere Contacts")
   anotherSphere.setOrigin(vector(0, 6, 0));
   contacts = intersectionTester.detectCollision((Geometry&) sphere, (Geometry&) anotherSphere);
   REQUIRE(contacts.empty());
+}
+
+TEST_CASE("Aabb Aabb Contacts")
+{
+  CollisionTester intersectionTester;
+
+  AABB left(vector(0, 0, 0), vector(1, 2, 3));
+
+  /*X axis*/
+  AABB right(vector(1.9, 0, 0), vector(1, 1, 1));
+  std::vector<GeometryContact> contacts = intersectionTester.detectCollision(left, right);
+  REQUIRE(!contacts.empty());
+  CHECK(&left == contacts.front().getGeometryA());
+  CHECK(&right == contacts.front().getGeometryB());
+  CHECK_THAT(contacts.front().getPenetration(), Catch::Matchers::WithinAbs(0.1, 0.2));
+  CHECK_THAT(contacts.front().getNormal(), EqualsVector(vector(-1, 0, 0)));
+
+  right.setOrigin(vector(2.1, 0, 0));
+  REQUIRE(intersectionTester.detectCollision(left, right).empty());
+
+  right.setOrigin(vector(-1.9, 0, 0));
+  contacts = intersectionTester.detectCollision(left, right);
+  REQUIRE(!contacts.empty());
+  CHECK(&left == contacts.front().getGeometryA());
+  CHECK(&right == contacts.front().getGeometryB());
+  CHECK_THAT(contacts.front().getPenetration(), Catch::Matchers::WithinAbs(0.1, 0.2));
+  CHECK_THAT(contacts.front().getNormal(), EqualsVector(vector(1, 0, 0)));
+
+  right.setOrigin(vector(-2.1, 0, 0));
+  REQUIRE(intersectionTester.detectCollision(left, right).empty());
+
+  //  /*Y axis*/
+  right.setOrigin(vector(0, 2.9, 0));
+  contacts = intersectionTester.detectCollision(left, right);
+  REQUIRE(!contacts.empty());
+  CHECK(&left == contacts.front().getGeometryA());
+  CHECK(&right == contacts.front().getGeometryB());
+  CHECK_THAT(contacts.front().getPenetration(), Catch::Matchers::WithinAbs(0.1, 0.2));
+  CHECK_THAT(contacts.front().getNormal(), EqualsVector(vector(0, -1, 0)));
+
+  right.setOrigin(vector(0, 3.1, 0));
+  REQUIRE(intersectionTester.detectCollision(left, right).empty());
+
+  right.setOrigin(vector(0, -2.9, 0));
+  contacts = intersectionTester.detectCollision(left, right);
+  REQUIRE(!contacts.empty());
+  CHECK(&left == contacts.front().getGeometryA());
+  CHECK(&right == contacts.front().getGeometryB());
+  CHECK_THAT(contacts.front().getPenetration(), Catch::Matchers::WithinAbs(0.1, 0.2));
+  CHECK_THAT(contacts.front().getNormal(), EqualsVector(vector(0, 1, 0)));
+
+  right.setOrigin(vector(0, -3.1, 0));
+  REQUIRE(intersectionTester.detectCollision(left, right).empty());
+
+  /*Z axis*/
+  right.setOrigin(vector(0, 0, 3.9));
+  contacts = intersectionTester.detectCollision(left, right);
+  REQUIRE(!contacts.empty());
+  CHECK(&left == contacts.front().getGeometryA());
+  CHECK(&right == contacts.front().getGeometryB());
+  CHECK_THAT(contacts.front().getPenetration(), Catch::Matchers::WithinAbs(0.1, 0.2));
+  CHECK_THAT(contacts.front().getNormal(), EqualsVector(vector(0, 0, -1)));
+
+  right.setOrigin(vector(0, 0, 4.1));
+  REQUIRE(intersectionTester.detectCollision(left, right).empty());
+
+  right.setOrigin(vector(0, 0, -3.9));
+  contacts = intersectionTester.detectCollision(left, right);
+  REQUIRE(!contacts.empty());
+  CHECK(&left == contacts.front().getGeometryA());
+  CHECK(&right == contacts.front().getGeometryB());
+  CHECK_THAT(contacts.front().getPenetration(), Catch::Matchers::WithinAbs(0.1, 0.2));
+  CHECK_THAT(contacts.front().getNormal(), EqualsVector(vector(0, 0, 1)));
+
+  right.setOrigin(vector(0, 0, -4.1));
+  REQUIRE(intersectionTester.detectCollision(left, right).empty());
 }
