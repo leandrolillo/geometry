@@ -18,7 +18,7 @@ private:
   const Geometry *geometryB;
 
 public:
-  GeometryContact(const Geometry *geometryA, const Geometry *geometryB, const vector &intersection, const vector &normal, real restitution, real penetration = 0.0) : BaseContact (intersection, normal, restitution, penetration){
+  GeometryContact(const Geometry *geometryA, const Geometry *geometryB, const vector &intersection, const vector &normal, real penetration = 0.0) : BaseContact (intersection, normal, penetration){
       this->geometryA = geometryA;
       this->geometryB = geometryB;
   }
@@ -32,6 +32,6 @@ public:
   }
 
   GeometryContact reverse() const {
-      return GeometryContact(this->geometryB, this->geometryA, intersection, normal * -1, restitution, penetration);
+      return GeometryContact(this->geometryB, this->geometryA, intersection, normal * -1, penetration);
   }
 };
