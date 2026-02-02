@@ -32,9 +32,9 @@ TEST_CASE("AABB Methods") {
   AABB aabb(vector(0, 0, 0), vector(1, 2, 3));
   CHECK(aabb.getMins() == vector(-1, -2, -3));
   CHECK(aabb.getMaxs() == vector(1, 2, 3));
-  CHECK(aabb.getPosition() == vector(-1, -2, -3));
+  CHECK(aabb.getTopLeft() == vector(-1, -2, -3));
 
-  aabb.setPosition(vector(0, 0, 0));
+  aabb.setTopLeft(vector(0, 0, 0));
   CHECK(aabb.getOrigin() == vector(1, 2, 3));
 
   aabb.setOrigin(vector(0, 0, 0));

@@ -26,7 +26,7 @@ class Geometry {
   vector origin; //keep this property private and use getOrigin instead.
   bool _status = true;
 
-  std::function<void(GeometryContact &contact)> _onCollision;
+  std::function<void(GeometryContact &contact)> _onCollision; //should we move this property to a collision detection class?
 public:
   Geometry(const vector &origin) {
       this->origin = origin;
@@ -154,6 +154,11 @@ public:
       this->halfSizes = halfSizes;
   }
 
+  const vector getSize() const {
+    return this->halfSizes * 2.0;
+  }
+
+
   const vector &getHalfSizes() const {
       return this->halfSizes;
   }
@@ -161,6 +166,7 @@ public:
   void setHalfSizes(const vector &halfSizes) {
       this->halfSizes = halfSizes;
   }
+
 
 
   /**
@@ -180,14 +186,14 @@ public:
   /**
    * Returns the bottom-left-near position of the aabb. On the other hand, Origin is the center.
    */
-  vector getPosition() const {
+  vector getTopLeft() const {
     return getMins();
   }
 
   /**
    * Sets the bottom-left-near position of the aabb. On the other hand, Origin is the center.
    */
-  void setPosition(const vector &position) {
+  void setTopLeft(const vector &position) {
     setOrigin(position + halfSizes);
   }
 
@@ -385,11 +391,11 @@ public:
 
 
   real heightAt(real x, real z) const {
-    return this->heightMap.heightAt(x - this->getPosition().x, z - this->getPosition().z);
+    return this->heightMap.heightAt(x - this->getTopLeft().x, z - this->getTopLeft().z);
   }
 
   vector normalAt(real x, real z) const {
-    return this->heightMap.normalAt(x - this->getPosition().x, z - this->getPosition().z);
+    return this->heightMap.normalAt(x - this->getTopLeft().x, z - this->getTopLeft().z);
   }
 };
 
