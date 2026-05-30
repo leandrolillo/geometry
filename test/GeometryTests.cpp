@@ -10,7 +10,11 @@ public:
   real getWidth() const override { return 10.0; }
   real getHeight() const override { return 5.0; }
   real getDepth() const override { return 10.0; }
-  real heightAt(real x, real z) const override { return (x + z) * 0.0; }
+  real heightAt(real x, real z) const override {
+    (void)x;
+    (void)z;
+    return 0.0;
+  }
   vector normalAt(real x, real z) const override {
     (void)x;
     (void)z;
@@ -408,7 +412,9 @@ TEST_CASE("Heightmap collisions and unsupported pair branches")
 
 TEST_CASE("Contact utility branches")
 {
-  GeometryContact contact(nullptr, nullptr, vector(1, 2, 3), vector(0, 1, 0), -0.5);
+  Sphere sphereA(vector(0, 0, 0), 1.0);
+  Sphere sphereB(vector(1, 0, 0), 1.0);
+  GeometryContact contact(&sphereA, &sphereB, vector(1, 2, 3), vector(0, 1, 0), -0.5);
   CHECK(!contact.isIntersecting());
 
   GeometryContact reversed = contact.reverse();

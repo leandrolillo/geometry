@@ -23,18 +23,32 @@ Aabb 0 0
 Hierarchy 0 0
 Heightmap 0 0
 Contact 0 0
-Geometry Test case 1 0.00858375
-Sphere Methods 1 0.00824963
-AABB Methods 1 0.00864998
-Sphere Intersections 1 0.00861792
-Plane Intersections 1 0.0081132
-Aabb Sphere Intersections 1 0.00843619
-Sphere AABB Intersection (troubleshooting bug) 1 0.00834936
-Aabb Aabb Intersections 1 0.00834461
-Ray Aabb Intersections 1 0.00888299
-Sphere Contacts 1 0.00864255
-Aabb Aabb Contacts 1 0.00860821
-Hierarchy and frustum branches 1 0.00863651
-Heightmap collisions and unsupported pair branches 1 0.00870023
-Contact utility branches 1 0.00878805
+Geometry 0 0
+Sphere 0 1
+AABB 0 1
+Sphere 0 1
+Plane 0 1
+Aabb 0 0
+Sphere 0 0
+Aabb 0 0
+Ray 0 0
+Sphere 0 1
+Aabb 0 0
+Hierarchy 0 0
+Heightmap 0 0
+Contact 0 0
+Geometry Test case 1 0.00805951
+Sphere Methods 1 0.00790377
+AABB Methods 1 0.00823154
+Sphere Intersections 1 0.00832081
+Plane Intersections 1 0.00829571
+Aabb Sphere Intersections 1 0.00808077
+Sphere AABB Intersection (troubleshooting bug) 1 0.00794155
+Aabb Aabb Intersections 1 0.00791724
+Ray Aabb Intersections 1 0.00796319
+Sphere Contacts 1 0.00789056
+Aabb Aabb Contacts 1 0.0079063
+Hierarchy and frustum branches 1 0.00801674
+Heightmap collisions and unsupported pair branches 1 0.00792883
+Contact utility branches 1 0.00782508
 ---
