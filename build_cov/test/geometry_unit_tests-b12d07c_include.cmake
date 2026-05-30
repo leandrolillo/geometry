@@ -1,5 +1,0 @@
-if(EXISTS "/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests-b12d07c_tests.cmake")
-  include("/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests-b12d07c_tests.cmake")
-else()
-  add_test(geometry_unit_tests_NOT_BUILT-b12d07c geometry_unit_tests_NOT_BUILT-b12d07c)
-endif()
