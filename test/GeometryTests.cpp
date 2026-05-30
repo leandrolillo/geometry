@@ -5,6 +5,19 @@
 #include "Geometry.h"
 #include "CollisionTester.h"
 
+class FlatHeightMap : public HeightMap {
+public:
+  real getWidth() const override { return 10.0; }
+  real getHeight() const override { return 5.0; }
+  real getDepth() const override { return 10.0; }
+  real heightAt(real x, real z) const override { return (x + z) * 0.0; }
+  vector normalAt(real x, real z) const override {
+    (void)x;
+    (void)z;
+    return vector(0, 1, 0);
+  }
+};
+
 TEST_CASE("Geometry Test case")
 {
   REQUIRE(1 == 1);
@@ -336,4 +349,70 @@ TEST_CASE("Aabb Aabb Contacts")
 
   right.setOrigin(vector(0, 0, -4.1));
   REQUIRE(intersectionTester.detectCollision(left, right).empty());
+}
+
+TEST_CASE("Hierarchy and frustum branches")
+{
+  CollisionTester collisionTester;
+
+  Sphere querySphere(vector(0, 0, 0), 2.0);
+  auto hierarchy = std::make_unique<HierarchicalGeometry>(
+      std::make_unique<Sphere>(vector(0, 0, 0), 10.0),
+      std::make_unique<Sphere>(vector(0, 0, 0), 1.5));
+  hierarchy->addChildren(std::make_unique<Sphere>(vector(20, 20, 20), 1.0));
+
+  CHECK(collisionTester.intersects(querySphere, *hierarchy));
+  auto contacts = collisionTester.detectCollision(querySphere, *hierarchy);
+  REQUIRE(contacts.size() == 1);
+
+  hierarchy->setOrigin(vector(100, 100, 100));
+  CHECK(!collisionTester.intersects(querySphere, *hierarchy));
+  CHECK(collisionTester.detectCollision(querySphere, *hierarchy).empty());
+
+  std::vector<Plane> planes{
+      Plane(vector(0, 0, 0), vector(1, 0, 0)),
+      Plane(vector(0, 0, 0), vector(0, 1, 0)),
+      Plane(vector(0, 0, 0), vector(0, 0, 1))
+  };
+  Frustum frustum(planes);
+  CHECK(collisionTester.intersects(querySphere, frustum));
+
+  Sphere farSphere(vector(100, 0, 0), 1.0);
+  CHECK(!collisionTester.intersects(farSphere, frustum));
+}
+
+TEST_CASE("Heightmap collisions and unsupported pair branches")
+{
+  CollisionTester collisionTester;
+  FlatHeightMap flatHeightMap;
+  HeightMapGeometry heightMapGeometry(vector(0, 0, 0), flatHeightMap);
+
+  Sphere closeSphere(vector(2.0, 1.0, 2.0), 2.0);
+  Sphere farSphere(vector(2.0, 5.0, 2.0), 1.0);
+
+  CHECK(collisionTester.intersects(closeSphere, heightMapGeometry));
+  CHECK(!collisionTester.intersects(farSphere, heightMapGeometry));
+
+  auto contacts = collisionTester.detectCollision(closeSphere, heightMapGeometry);
+  REQUIRE(contacts.size() == 1);
+  CHECK(contacts.front().getGeometryA() == &closeSphere);
+  CHECK(contacts.front().getGeometryB() == &heightMapGeometry);
+  CHECK_THAT(contacts.front().getNormal(), EqualsVector(vector(0, 1, 0)));
+
+  CHECK(collisionTester.detectCollision(farSphere, heightMapGeometry).empty());
+
+  Plane plane(vector(0, 0, 0), vector(0, 1, 0));
+  CHECK(!collisionTester.intersects(plane, plane));
+  CHECK(collisionTester.detectCollision(plane, plane).empty());
+}
+
+TEST_CASE("Contact utility branches")
+{
+  GeometryContact contact(nullptr, nullptr, vector(1, 2, 3), vector(0, 1, 0), -0.5);
+  CHECK(!contact.isIntersecting());
+
+  GeometryContact reversed = contact.reverse();
+  CHECK(reversed.getGeometryA() == contact.getGeometryB());
+  CHECK(reversed.getGeometryB() == contact.getGeometryA());
+  CHECK_THAT(reversed.getNormal(), EqualsVector(vector(0, -1, 0)));
 }

@@ -1,14 +1,14 @@
-Start testing: May 30 04:09 UTC
+Start testing: May 30 04:10 UTC
 ----------------------------------------------------------
-1/11 Testing: Geometry Test case
-1/11 Test: Geometry Test case
+1/14 Testing: Geometry Test case
+1/14 Test: Geometry Test case
 Command: "/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests" "Geometry Test case"
 Directory: /tmp/workspace/leandrolillo/geometry/build_cov/test
-"Geometry Test case" start time: May 30 04:09 UTC
+"Geometry Test case" start time: May 30 04:10 UTC
 Output:
 ----------------------------------------------------------
 Filters: "Geometry Test case"
-Randomness seeded to: 3725174001
+Randomness seeded to: 131914660
 ===============================================================================
 All tests passed (1 assertion in 1 test case)
 
@@ -16,19 +16,19 @@ All tests passed (1 assertion in 1 test case)
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"Geometry Test case" end time: May 30 04:09 UTC
+"Geometry Test case" end time: May 30 04:10 UTC
 "Geometry Test case" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-2/11 Testing: Sphere Methods
-2/11 Test: Sphere Methods
+2/14 Testing: Sphere Methods
+2/14 Test: Sphere Methods
 Command: "/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests" "Sphere Methods"
 Directory: /tmp/workspace/leandrolillo/geometry/build_cov/test
-"Sphere Methods" start time: May 30 04:09 UTC
+"Sphere Methods" start time: May 30 04:10 UTC
 Output:
 ----------------------------------------------------------
 Filters: "Sphere Methods"
-Randomness seeded to: 2534144098
+Randomness seeded to: 3898935275
 ===============================================================================
 All tests passed (4 assertions in 1 test case)
 
@@ -36,19 +36,19 @@ All tests passed (4 assertions in 1 test case)
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"Sphere Methods" end time: May 30 04:09 UTC
+"Sphere Methods" end time: May 30 04:10 UTC
 "Sphere Methods" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-3/11 Testing: AABB Methods
-3/11 Test: AABB Methods
+3/14 Testing: AABB Methods
+3/14 Test: AABB Methods
 Command: "/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests" "AABB Methods"
 Directory: /tmp/workspace/leandrolillo/geometry/build_cov/test
-"AABB Methods" start time: May 30 04:09 UTC
+"AABB Methods" start time: May 30 04:10 UTC
 Output:
 ----------------------------------------------------------
 Filters: "AABB Methods"
-Randomness seeded to: 2683441271
+Randomness seeded to: 3773348206
 ===============================================================================
 All tests passed (18 assertions in 1 test case)
 
@@ -56,19 +56,19 @@ All tests passed (18 assertions in 1 test case)
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"AABB Methods" end time: May 30 04:09 UTC
+"AABB Methods" end time: May 30 04:10 UTC
 "AABB Methods" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-4/11 Testing: Sphere Intersections
-4/11 Test: Sphere Intersections
+4/14 Testing: Sphere Intersections
+4/14 Test: Sphere Intersections
 Command: "/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests" "Sphere Intersections"
 Directory: /tmp/workspace/leandrolillo/geometry/build_cov/test
-"Sphere Intersections" start time: May 30 04:09 UTC
+"Sphere Intersections" start time: May 30 04:10 UTC
 Output:
 ----------------------------------------------------------
 Filters: "Sphere Intersections"
-Randomness seeded to: 3214035881
+Randomness seeded to: 1700580
 ===============================================================================
 All tests passed (6 assertions in 1 test case)
 
@@ -76,19 +76,19 @@ All tests passed (6 assertions in 1 test case)
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"Sphere Intersections" end time: May 30 04:09 UTC
+"Sphere Intersections" end time: May 30 04:10 UTC
 "Sphere Intersections" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-5/11 Testing: Plane Intersections
-5/11 Test: Plane Intersections
+5/14 Testing: Plane Intersections
+5/14 Test: Plane Intersections
 Command: "/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests" "Plane Intersections"
 Directory: /tmp/workspace/leandrolillo/geometry/build_cov/test
-"Plane Intersections" start time: May 30 04:09 UTC
+"Plane Intersections" start time: May 30 04:10 UTC
 Output:
 ----------------------------------------------------------
 Filters: "Plane Intersections"
-Randomness seeded to: 3279141364
+Randomness seeded to: 512374598
 ===============================================================================
 All tests passed (2 assertions in 1 test case)
 
@@ -96,19 +96,19 @@ All tests passed (2 assertions in 1 test case)
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"Plane Intersections" end time: May 30 04:09 UTC
+"Plane Intersections" end time: May 30 04:10 UTC
 "Plane Intersections" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-6/11 Testing: Aabb Sphere Intersections
-6/11 Test: Aabb Sphere Intersections
+6/14 Testing: Aabb Sphere Intersections
+6/14 Test: Aabb Sphere Intersections
 Command: "/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests" "Aabb Sphere Intersections"
 Directory: /tmp/workspace/leandrolillo/geometry/build_cov/test
-"Aabb Sphere Intersections" start time: May 30 04:09 UTC
+"Aabb Sphere Intersections" start time: May 30 04:10 UTC
 Output:
 ----------------------------------------------------------
 Filters: "Aabb Sphere Intersections"
-Randomness seeded to: 1781450032
+Randomness seeded to: 336232817
 ===============================================================================
 All tests passed (2 assertions in 1 test case)
 
@@ -116,19 +116,19 @@ All tests passed (2 assertions in 1 test case)
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"Aabb Sphere Intersections" end time: May 30 04:09 UTC
+"Aabb Sphere Intersections" end time: May 30 04:10 UTC
 "Aabb Sphere Intersections" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-7/11 Testing: Sphere AABB Intersection (troubleshooting bug)
-7/11 Test: Sphere AABB Intersection (troubleshooting bug)
+7/14 Testing: Sphere AABB Intersection (troubleshooting bug)
+7/14 Test: Sphere AABB Intersection (troubleshooting bug)
 Command: "/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests" "Sphere AABB Intersection (troubleshooting bug)"
 Directory: /tmp/workspace/leandrolillo/geometry/build_cov/test
-"Sphere AABB Intersection (troubleshooting bug)" start time: May 30 04:09 UTC
+"Sphere AABB Intersection (troubleshooting bug)" start time: May 30 04:10 UTC
 Output:
 ----------------------------------------------------------
 Filters: "Sphere AABB Intersection (troubleshooting bug)"
-Randomness seeded to: 3307256947
+Randomness seeded to: 1616311069
 ===============================================================================
 All tests passed (8 assertions in 1 test case)
 
@@ -136,19 +136,19 @@ All tests passed (8 assertions in 1 test case)
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"Sphere AABB Intersection (troubleshooting bug)" end time: May 30 04:09 UTC
+"Sphere AABB Intersection (troubleshooting bug)" end time: May 30 04:10 UTC
 "Sphere AABB Intersection (troubleshooting bug)" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-8/11 Testing: Aabb Aabb Intersections
-8/11 Test: Aabb Aabb Intersections
+8/14 Testing: Aabb Aabb Intersections
+8/14 Test: Aabb Aabb Intersections
 Command: "/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests" "Aabb Aabb Intersections"
 Directory: /tmp/workspace/leandrolillo/geometry/build_cov/test
-"Aabb Aabb Intersections" start time: May 30 04:09 UTC
+"Aabb Aabb Intersections" start time: May 30 04:10 UTC
 Output:
 ----------------------------------------------------------
 Filters: "Aabb Aabb Intersections"
-Randomness seeded to: 3900048478
+Randomness seeded to: 3508840382
 ===============================================================================
 All tests passed (12 assertions in 1 test case)
 
@@ -156,19 +156,19 @@ All tests passed (12 assertions in 1 test case)
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"Aabb Aabb Intersections" end time: May 30 04:09 UTC
+"Aabb Aabb Intersections" end time: May 30 04:10 UTC
 "Aabb Aabb Intersections" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-9/11 Testing: Ray Aabb Intersections
-9/11 Test: Ray Aabb Intersections
+9/14 Testing: Ray Aabb Intersections
+9/14 Test: Ray Aabb Intersections
 Command: "/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests" "Ray Aabb Intersections"
 Directory: /tmp/workspace/leandrolillo/geometry/build_cov/test
-"Ray Aabb Intersections" start time: May 30 04:09 UTC
+"Ray Aabb Intersections" start time: May 30 04:10 UTC
 Output:
 ----------------------------------------------------------
 Filters: "Ray Aabb Intersections"
-Randomness seeded to: 3732531394
+Randomness seeded to: 3551613171
 ===============================================================================
 All tests passed (11 assertions in 1 test case)
 
@@ -176,19 +176,19 @@ All tests passed (11 assertions in 1 test case)
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"Ray Aabb Intersections" end time: May 30 04:09 UTC
+"Ray Aabb Intersections" end time: May 30 04:10 UTC
 "Ray Aabb Intersections" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-10/11 Testing: Sphere Contacts
-10/11 Test: Sphere Contacts
+10/14 Testing: Sphere Contacts
+10/14 Test: Sphere Contacts
 Command: "/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests" "Sphere Contacts"
 Directory: /tmp/workspace/leandrolillo/geometry/build_cov/test
-"Sphere Contacts" start time: May 30 04:09 UTC
+"Sphere Contacts" start time: May 30 04:10 UTC
 Output:
 ----------------------------------------------------------
 Filters: "Sphere Contacts"
-Randomness seeded to: 3873026959
+Randomness seeded to: 2968858383
 ===============================================================================
 All tests passed (6 assertions in 1 test case)
 
@@ -196,19 +196,19 @@ All tests passed (6 assertions in 1 test case)
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"Sphere Contacts" end time: May 30 04:09 UTC
+"Sphere Contacts" end time: May 30 04:10 UTC
 "Sphere Contacts" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-11/11 Testing: Aabb Aabb Contacts
-11/11 Test: Aabb Aabb Contacts
+11/14 Testing: Aabb Aabb Contacts
+11/14 Test: Aabb Aabb Contacts
 Command: "/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests" "Aabb Aabb Contacts"
 Directory: /tmp/workspace/leandrolillo/geometry/build_cov/test
-"Aabb Aabb Contacts" start time: May 30 04:09 UTC
+"Aabb Aabb Contacts" start time: May 30 04:10 UTC
 Output:
 ----------------------------------------------------------
 Filters: "Aabb Aabb Contacts"
-Randomness seeded to: 34009792
+Randomness seeded to: 337788972
 ===============================================================================
 All tests passed (36 assertions in 1 test case)
 
@@ -216,8 +216,68 @@ All tests passed (36 assertions in 1 test case)
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"Aabb Aabb Contacts" end time: May 30 04:09 UTC
+"Aabb Aabb Contacts" end time: May 30 04:10 UTC
 "Aabb Aabb Contacts" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: May 30 04:09 UTC
+12/14 Testing: Hierarchy and frustum branches
+12/14 Test: Hierarchy and frustum branches
+Command: "/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests" "Hierarchy and frustum branches"
+Directory: /tmp/workspace/leandrolillo/geometry/build_cov/test
+"Hierarchy and frustum branches" start time: May 30 04:10 UTC
+Output:
+----------------------------------------------------------
+Filters: "Hierarchy and frustum branches"
+Randomness seeded to: 1901188641
+===============================================================================
+All tests passed (6 assertions in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"Hierarchy and frustum branches" end time: May 30 04:10 UTC
+"Hierarchy and frustum branches" time elapsed: 00:00:00
+----------------------------------------------------------
+
+13/14 Testing: Heightmap collisions and unsupported pair branches
+13/14 Test: Heightmap collisions and unsupported pair branches
+Command: "/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests" "Heightmap collisions and unsupported pair branches"
+Directory: /tmp/workspace/leandrolillo/geometry/build_cov/test
+"Heightmap collisions and unsupported pair branches" start time: May 30 04:10 UTC
+Output:
+----------------------------------------------------------
+Filters: "Heightmap collisions and unsupported pair branches"
+Randomness seeded to: 3357065306
+===============================================================================
+All tests passed (9 assertions in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"Heightmap collisions and unsupported pair branches" end time: May 30 04:10 UTC
+"Heightmap collisions and unsupported pair branches" time elapsed: 00:00:00
+----------------------------------------------------------
+
+14/14 Testing: Contact utility branches
+14/14 Test: Contact utility branches
+Command: "/tmp/workspace/leandrolillo/geometry/build_cov/test/geometry_unit_tests" "Contact utility branches"
+Directory: /tmp/workspace/leandrolillo/geometry/build_cov/test
+"Contact utility branches" start time: May 30 04:10 UTC
+Output:
+----------------------------------------------------------
+Filters: "Contact utility branches"
+Randomness seeded to: 4208063389
+===============================================================================
+All tests passed (4 assertions in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"Contact utility branches" end time: May 30 04:10 UTC
+"Contact utility branches" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: May 30 04:10 UTC

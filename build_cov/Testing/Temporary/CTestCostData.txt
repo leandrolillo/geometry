@@ -1,12 +1,40 @@
-Geometry Test case 1 0.00916371
-Sphere Methods 1 0.00867548
-AABB Methods 1 0.00884827
-Sphere Intersections 1 0.00855049
-Plane Intersections 1 0.00866119
-Aabb Sphere Intersections 1 0.00899522
-Sphere AABB Intersection (troubleshooting bug) 1 0.00836412
-Aabb Aabb Intersections 1 0.00841513
-Ray Aabb Intersections 1 0.00866864
-Sphere Contacts 1 0.00846107
-Aabb Aabb Contacts 1 0.00846445
+Geometry 0 0
+Sphere 0 1
+AABB 0 1
+Sphere 0 1
+Plane 0 1
+Aabb 0 0
+Sphere 0 0
+Aabb 0 0
+Ray 0 0
+Sphere 0 1
+Aabb 0 0
+Geometry 0 0
+Sphere 0 1
+AABB 0 1
+Sphere 0 1
+Plane 0 1
+Aabb 0 0
+Sphere 0 0
+Aabb 0 0
+Ray 0 0
+Sphere 0 1
+Aabb 0 0
+Hierarchy 0 0
+Heightmap 0 0
+Contact 0 0
+Geometry Test case 1 0.00858375
+Sphere Methods 1 0.00824963
+AABB Methods 1 0.00864998
+Sphere Intersections 1 0.00861792
+Plane Intersections 1 0.0081132
+Aabb Sphere Intersections 1 0.00843619
+Sphere AABB Intersection (troubleshooting bug) 1 0.00834936
+Aabb Aabb Intersections 1 0.00834461
+Ray Aabb Intersections 1 0.00888299
+Sphere Contacts 1 0.00864255
+Aabb Aabb Contacts 1 0.00860821
+Hierarchy and frustum branches 1 0.00863651
+Heightmap collisions and unsupported pair branches 1 0.00870023
+Contact utility branches 1 0.00878805
 ---
