@@ -1,4 +1,5 @@
 /build/
+/build_cov/
 /target/
 .cproject
 .project

@@ -7,6 +7,9 @@
 
 #pragma once
 
+#include <functional>
+#include <memory>
+
 #include "Math3d.h"
 
 enum class GeometryType {
