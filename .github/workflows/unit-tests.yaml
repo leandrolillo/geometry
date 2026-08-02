@@ -10,7 +10,17 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: building and testing
+    - uses: actions/checkout@v4
+    - name: build
       run: |
-        ./cmakew -t .
+        ./cmakew . 
+    - name: test
+      run: |
+        ./cmakew -t . 
+    - name: Publish Test Report
+      uses: dorny/test-reporter@v1
+      if: always() # Run even if tests fail
+      with:
+        name: CTest Results
+        path: build/ctest-report.xml
+        reporter: java-junit # Works for any JUnit-formatted XML
